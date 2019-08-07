@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.soft.nortek.demo">
+    <!--相机/摄像头权限-->
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <!--录音权限-->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <!--休眠唤醒权限-->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!--允许访问WIFI 状态的权限-->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <!--允许访问电话 状态的权限-->
+    <!--<uses-permission android:name="android.permission.READ_PHONE_STATE"/>-->
+    <!--获取网络状态的权限控制-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <!--使得sd卡获得写的权限-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <!--使得sd卡获得读的权限-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <!--允许修改网络状态的权限-->
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <!--允许修改WIFI 状态的权限-->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+
+    <application
+        android:name=".BaseApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity" android:screenOrientation = "landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".RecordActivity" android:screenOrientation = "landscape"/>
+        <activity android:name=".DisPlayActivity" android:screenOrientation = "landscape"/>
+        <activity android:name=".DrawActivity" android:screenOrientation = "landscape"/>
+        <activity android:name=".WifiIperfActivity" android:screenOrientation = "landscape"/>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.soft.nortek.demo.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <!-- 如果您项目中的所有页面都只需要以高或宽中的一个作为基准进行适配的话, 那就只需要填写高或宽中的一个设计图尺寸即可 -->
+        <meta-data
+            android:name="design_width_in_dp"
+            android:value="1024"/>
+        <meta-data
+            android:name="design_height_in_dp"
+            android:value="600"/>
+
+
+        <receiver android:name=".NetworkStateReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.wifi.STATE_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+
+</manifest>

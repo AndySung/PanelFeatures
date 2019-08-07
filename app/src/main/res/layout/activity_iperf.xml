@@ -1,0 +1,109 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/toolbar_record"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="?attr/actionBarSize"
+        android:background="?attr/colorPrimary" >
+        <Button android:id="@+id/iperf_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:textColor="@color/text_color_white"
+            android:text="Back"
+            android:textSize="@dimen/text_size20"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/wifi_hint"
+        android:textSize="@dimen/text_size22"/>
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/padding_40"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/btn_wifi_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wifi_address"
+            android:textColor="#222"
+            android:textSize="@dimen/text_size22"/>
+
+        <TextView
+            android:id="@+id/wifi_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:textSize="30dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/btn_wifi_signal_strength"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wifi_signal_strength"
+            android:textColor="#222"
+            android:textSize="@dimen/text_size22"/>
+        <TextView
+            android:id="@+id/wifi_signal_strength"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:textSize="@dimen/text_size22"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="@color/color_green"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/switch_description"
+            android:textSize="@dimen/text_size22"/>
+        <Switch
+            android:id="@+id/wifi_switch"
+            android:textOn="@string/wifi_service"
+            android:textOff="@string/wifi_client"
+            android:track="@drawable/track"
+            android:switchMinWidth="@dimen/padding_20"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btn_wifi_throughput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/wifi_throughput_show"
+            android:textColor="#222"
+            android:textSize="30dp"/>
+        <TextView
+            android:id="@+id/wifi_throughput_show"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:textSize="30dp"/>
+    </LinearLayout>
+
+</LinearLayout>
