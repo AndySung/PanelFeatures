@@ -3,4 +3,4 @@ Test whether the function on the Android board is normal, camera, recording, wir
 
 README
 =====
-![baidu](http://www.baidu.com/img/bdlogo.gif "百度logo")  
+![github](https://github.com/AndySung/readme_add_pic/blob/master/github-logo.png "Github logo")  
