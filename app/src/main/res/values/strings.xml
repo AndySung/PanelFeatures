@@ -1,0 +1,35 @@
+<resources>
+    <string name="start_floatingBall">Turn on suspension</string>
+    <string name="app_name">TestDemo</string>
+    <string name="wifi_btn">WIFICON</string>
+    <string name="camera_btn">CAMERA</string>
+    <string name="record_btn">RECORD</string>
+    <string name="play_btn">\u0008PLAY\u0008\u0008\u0008</string>
+    <string name="touch_btn">\u0008TOUCH\u0008</string>
+    <string name="display_btn">DISPLAY</string>
+    <string name="play_rec_btn">PLAY&amp;REC</string>
+    <string name="IPERF_btn">\u0008\u0008\u0008IPERF\u0008\u0008\u0008\u0008\u0008</string>
+    <string name="reset_btn">RESET</string>
+
+    <string name="start_record_btn">START RECORD</string>
+    <string name="stop_record_btn">STOP RECORD</string>
+    <string name="play_record_btn">PLAY</string>
+    <string name="pause_btn">PAUSE</string>
+    <string name="stop_btn">STOP</string>
+
+    <string name="ok">The recording file has finished playing.</string>
+
+    <string name="delete_all_file">DELETE ALL FILE</string>
+
+
+    <string name="wifi_manager">WIFI management</string>
+    <string name="wifi_address">WIFI address：</string>
+    <string name="wifi_throughput_show">Throughput:</string>
+    <string name="wifi_signal_strength">Signal：</string>
+    <string name="wifi_service">Server</string>
+    <string name="wifi_client">Client</string>
+    <string name="wifi_hint">Note: When performing the throughput test for the first time, please exit the entire application and then enter</string>
+
+    <string name="switch_description">The switch is turned on for the server mode and the switch is turned off for the client mode.</string>
+
+</resources>
