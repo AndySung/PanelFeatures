@@ -5,7 +5,6 @@ import android.annotation.TargetApi;
 import android.content.ActivityNotFoundException;
 import android.content.ContentUris;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -184,8 +183,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //初始化播放器 MediaPlayer
     private void initMediaPlayer() {
         try {
-            //File file = new File(Environment.getExternalStorageDirectory(), "song.wav");
-            File file = new File("/mnt/sdcard/", "song.wav");
+            //File file = new File(Environment.getExternalStorageDirectory(), "max_1k.wav");
+            File file = new File("/mnt/sdcard/", "max_1k.wav");
             mMediaPlayer.setDataSource(file.getPath());//指定音频文件路径
             mMediaPlayer.setLooping(true);//设置为循环播放
             mMediaPlayer.prepare();//初始化播放器MediaPlayer
@@ -430,13 +429,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         saveDialog.setTitle("Tips");
                         saveDialog.setMessage("Image's address:"+mImageUriFromFile);
                         saveDialog.setPositiveButton("ok", null);
-                        saveDialog.setNeutralButton("Check", new DialogInterface.OnClickListener() {
+                        /*saveDialog.setNeutralButton("Check", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                                openAssignFolder("file:///storage/emulated/0/Pictures");
+                                if (imageFile != null) {
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                        *//*7.0以上要通过FileProvider将File转化为Uri*//*
+                                        mImageUri = FileProvider.getUriForFile(MainActivity.this, FILE_PROVIDER_AUTHORITY, imageFile);
+                                    } else {
+                                        *//*7.0以下则直接使用Uri的fromFile方法将File转化为Uri*//*
+                                        mImageUri = Uri.fromFile(imageFile);
+                                    }
+                                    openAssignFolder(mImageUri.getPath());
+                                }
                             }
-                        });
+                        });*/
                         saveDialog.show();
 
                     } catch (FileNotFoundException e) {
@@ -470,9 +477,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private File createImageFile() {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        //File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        File sdCard = Environment.getExternalStorageDirectory();
-        File storageDir = new File(sdCard, "Pictures");
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        //File sdCard = Environment.getExternalStorageDirectory();
+        //File storageDir = new File(sdCard, "Pictures");
         File imageFile = null;
         try {
             imageFile = File.createTempFile(imageFileName, ".jpg", storageDir);
