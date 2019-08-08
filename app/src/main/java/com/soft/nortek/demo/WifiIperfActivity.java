@@ -70,7 +70,7 @@ public class WifiIperfActivity extends Activity implements View.OnClickListener,
         mShroughput = findViewById(R.id.wifi_throughput_show);
         mSignalStrength = findViewById(R.id.wifi_signal_strength);
         backBtn = findViewById(R.id.iperf_back);
-
+        ///Wi-Fi管理类
         mWm = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         mSwitch = findViewById(R.id.wifi_switch);
         mSwitch.setChecked(true);
@@ -257,6 +257,5 @@ public class WifiIperfActivity extends Activity implements View.OnClickListener,
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
     }
 }
