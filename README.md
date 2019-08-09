@@ -28,7 +28,7 @@ README
 
 
 
-##iPerf 
+##iPerf
 ####测试方式
 ######1. 测试上行速率（Mac作Server，手机作Client）
 ######2. 测试下行速率（手机作Server，Mac作Client）
