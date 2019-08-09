@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +24,7 @@ public class RecordActivity extends Activity implements View.OnClickListener {
     ///以文件形式保存
     private File recordFile;
     private RecordPlayer mPlayer;
+    private static final String RECORD_ADD = "/data/data/com.soft.nortek.demo/";
 
 
     @Override
@@ -39,8 +39,8 @@ public class RecordActivity extends Activity implements View.OnClickListener {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "Record_" + timeStamp + "_";
         //File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC);
-        File sdCard = Environment.getExternalStorageDirectory();
-        File storageDir = new File(sdCard, "Music");
+        //File sdCard = Environment.getExternalStorageDirectory();
+        File storageDir = new File(RECORD_ADD, "record");
         File imageFile = null;
         try {
             imageFile = File.createTempFile(imageFileName, ".amr", storageDir);
@@ -125,7 +125,7 @@ public class RecordActivity extends Activity implements View.OnClickListener {
                 break;
 
             case R.id.delete_all_file:
-                deleteAllFiles(new File(Environment.getExternalStorageDirectory(), "Music"));
+                deleteAllFiles(new File(RECORD_ADD, "record"));
                 break;
             case R.id.record_back:
                 finish();
@@ -145,7 +145,7 @@ public class RecordActivity extends Activity implements View.OnClickListener {
             recordFile = null;
         }
 
-        deleteAllFiles(new File(Environment.getExternalStorageDirectory(), "Music"));
+        deleteAllFiles(new File(RECORD_ADD, "record"));
 
         if(recordFile!=null) {
             recordFile.delete();

@@ -44,6 +44,7 @@ import com.tj24.easywifi.wifi.WifiUtil;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -65,9 +66,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private final String TAG = getClass().getSimpleName();
     private ImageView mPicture;
-    //private static final String PERMISSION_WRITE_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
-    //private String[] permissions = {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    //private static final int REQUEST_PERMISSION_CODE = 267;
     private static final int TAKE_PHOTO = 189;
     private static final int CHOOSE_PHOTO = 385;
     private static final String FILE_PROVIDER_AUTHORITY = "com.soft.nortek.demo.fileprovider";
@@ -93,9 +91,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean IPERF_OK = false;
 
     /**添加路径**/
-    private static final String WIFI_DATA_FILE = "/mnt/sdcard/wifidemo/wifidata.txt";
-    private static final String WIFI_DATA_ADD = "/mnt/sdcard/wifidemo/";
-    private static final String MUSIC_ADD = "/mnt/sdcard/";
+   // private static final String WIFI_DATA_FILE = "/data/data/com.soft.nortek.demo/wifidata.txt";
+    //private static final String WIFI_DATA_ADD = "/data/data/com.soft.nortek.demo/";
+    //private static final String MUSIC_ADD = "/data/data/com.soft.nortek.demo/";
+    //private static final String RECORD_ADD = "/data/data/com.soft.nortek.demo/";
+    private static final String WIFI_DATA_FILE = "/data/data/ATE/wifidata.txt";
+    private static final String WIFI_DATA_ADD = "/data/data/ATE/";
+    private static final String MUSIC_ADD = "/data/data/ATE/";
+    private static final String RECORD_ADD = "/data/data/ATE/";
+
+
 
 
     @Override
@@ -105,19 +110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initView();
         viewOnClick();
         wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        //mWifiAdmin = new WifiAdmin(wifiManager);
-//        /*申请读取存储的权限*/
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            if (checkSelfPermission(PERMISSION_WRITE_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-//                requestPermissions(new String[]{PERMISSION_WRITE_STORAGE}, REQUEST_PERMISSION_CODE);
-//            }
-//        }
-//        //权限判断，如果没有权限就请求权限
-//        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-//            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-//        } else {
-            initMediaPlayer();//初始化播放器 MediaPlayer
-//        }
+        initMediaPlayer();//初始化播放器 MediaPlayer
 //        getPermission();
         /**将iperf文件拷贝到别处**/
         File file = new File(IPERF_PATH);
@@ -125,29 +118,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(!file.exists()){
             copyiperf();
         }
-
-//        ConnectivityManager manager = (ConnectivityManager)MainActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
-//        NetworkInfo activeNetwork = manager.getActiveNetworkInfo();
-//        if (activeNetwork != null) { // connected to the internet
-//            if (activeNetwork.isConnected()) {
-//                if (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) {
-//                    // connected to wifi
-//
-//                    Log.e(TAG, "当前WiFi连接可用 ");
-//                } else if (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE) {
-//                    // connected to the mobile provider's data plan
-//
-//                    Log.e(TAG, "当前移动网络连接可用 ");
-//                }
-//            } else {
-//                Log.e(TAG, "当前没有网络连接，请确保你已经打开网络 ");
-//            }
-//        } else {   // not connected to the internet
-//            Log.e(TAG, "当前没有网络连接，请确保你已经打开网络 ");
-//
-//        }
         checkState_23orNew();
-
     }
 
     public void checkState_23orNew(){
@@ -163,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //获取ConnectivityManager对象对应的NetworkInfo对象
             NetworkInfo networkInfo = connMgr.getNetworkInfo(networks[i]);
             sb.append(networkInfo.getTypeName() + " connect is " + networkInfo.isConnected());
-            Toast.makeText(MainActivity.this,sb,Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MainActivity.this,sb,Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -182,6 +153,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             pm_request.requestPermissionForWriteExternalStorage();
         }
         ipAddress.setText("Wifi IP Address:"+getLocalIpAddress());
+
+        getRootCommand();
+    }
+
+
+    /**
+     * APP向系统申请ROOT权限
+     * */
+    private void getRootCommand(){
+        String apkRoot="chmod 777 "+getPackageCodePath();
+        SystemManager.RootCommand(apkRoot);
     }
 
     //初始化播放器 MediaPlayer
@@ -282,12 +264,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     return;
                 }else {
                     String fileContent = getFileContent(file);
+
                     /**读取txt文件中的数据**/
                     String[] str = fileContent.split(";");
+                    Log.i("wifi------>:", fileContent);
                     String wifi_ssid = str[0];
                     String wifi_pwd = str[1];
                     final String SSID = wifi_ssid.substring(wifi_ssid.indexOf("<")+1,wifi_ssid.indexOf(">"));
                     final String PWD = wifi_pwd.substring(wifi_pwd.indexOf("{")+1,wifi_pwd.indexOf("}"));
+                    Log.i("Wifi File:",SSID + ":"+PWD);
                     Toast.makeText(MainActivity.this, "SSID:"+SSID+"\nPWD:"+PWD,Toast.LENGTH_SHORT).show();
 
                     /**根据SSID和PWD连接Wi-Fi**/
@@ -303,7 +288,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                         @Override
                         public void onConnectFail(String msg) {
-                            Toast.makeText(MainActivity.this,msg,Toast.LENGTH_SHORT).show();
+                            if(!msg.equals("")){
+                                Toast.makeText(MainActivity.this,msg,Toast.LENGTH_SHORT).show();
+                            }
+                            Log.i("Andy-"+TAG,"ConnectFail");
                         }
                     });
                 }
@@ -331,7 +319,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.play_rec_btn:
                 //创建录音文件
-                recAudioFile = new File("/mnt/sdcard/Music", "new.amr");
+                recAudioFile = new File(RECORD_ADD, "new.amr");
                 //开始录音
                 startRecorder();
                 //开始播放音乐，如果没在播放中，立刻开始播放
@@ -723,13 +711,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 try {
                     InputStream instream = new FileInputStream(file);
                     if (instream != null) {
-                        InputStreamReader inputreader
-                                = new InputStreamReader(instream, "UTF-8");
+                        InputStreamReader inputreader = new InputStreamReader(instream, "UTF-8");
                         BufferedReader buffreader = new BufferedReader(inputreader);
                         String line = "";
                         //分行读取
                         while ((line = buffreader.readLine()) != null) {
                             content += line + "\n";
+                            Log.d("TestFile--->", content);
                         }
                         instream.close();//关闭输入流
                     }
@@ -743,6 +731,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return content;
     }
 
+    /**读取文件的第二种方法，传入绝对路径名**/
+    private String getWifiDataFile(String file) throws IOException {
+        File fileStr = new File(file);
+        FileInputStream inStream = new FileInputStream(fileStr);
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();//输出到内存
+        int len=0;
+        byte[] buffer = new byte[1024];
+        while((len=inStream.read(buffer))!=-1){
+            outStream.write(buffer, 0, len);//
+        }
+        byte[] content_byte = outStream.toByteArray();
+        String content = new String(content_byte);
+        return content;
+
+    }
 
 
 
