@@ -1,0 +1,1 @@
+wifi_ssid:<HUAWEI P9>;wifi_password:{song0123.com};

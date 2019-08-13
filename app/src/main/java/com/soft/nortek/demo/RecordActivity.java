@@ -24,8 +24,8 @@ public class RecordActivity extends Activity implements View.OnClickListener {
     ///以文件形式保存
     private File recordFile;
     private RecordPlayer mPlayer;
-    private static final String RECORD_ADD = "/data/data/com.soft.nortek.demo/";
-
+    //private static final String RECORD_ADD = "/data/ATE/";
+    private static final String RECORD_ADD = "/data/data/com.soft.nortek.demo/files";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +40,7 @@ public class RecordActivity extends Activity implements View.OnClickListener {
         String imageFileName = "Record_" + timeStamp + "_";
         //File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC);
         //File sdCard = Environment.getExternalStorageDirectory();
+        isFolderExists(RECORD_ADD+"/"+"record");
         File storageDir = new File(RECORD_ADD, "record");
         File imageFile = null;
         try {
@@ -75,11 +76,8 @@ public class RecordActivity extends Activity implements View.OnClickListener {
         //刚开始进去
         stopRecBtn.setVisibility(View.INVISIBLE);
         stopRecBtn.setTextColor(Color.GRAY);
-
         RePlay(false);
-
     }
-
 
     private void RePlay(boolean isExist){
         if(isExist == true){
@@ -186,7 +184,18 @@ public class RecordActivity extends Activity implements View.OnClickListener {
 
     private void stopRecording() {
         if (recordFile != null) {
-            mMediaRecorder.stop();
+            mMediaRecorder.setOnErrorListener(null);
+            mMediaRecorder.setOnInfoListener(null);
+            mMediaRecorder.setPreviewDisplay(null);
+            try {
+                mMediaRecorder.stop();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             mMediaRecorder.release();
         }
         startRecBtn.setVisibility(View.VISIBLE);
@@ -226,6 +235,20 @@ public class RecordActivity extends Activity implements View.OnClickListener {
         }
     }
 
+    /**判断文件夹是否存在如果存在返回true，不存在则新建文件夹**/
+    boolean isFolderExists(String strFolder) {
+        File file = new File(strFolder);
+        if (!file.exists()) {
+            if (file.mkdirs()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**删除文件夹所有内容**/
     private void deleteAllFiles(File root) {
         File files[] = root.listFiles();
         if (files != null)

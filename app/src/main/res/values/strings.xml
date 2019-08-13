@@ -32,4 +32,11 @@
 
     <string name="switch_description">The switch is turned on for the server mode and the switch is turned off for the client mode.</string>
 
+    <string name="play_1khz">1KHZ</string>
+    <string name="play_channel">PLAY CHANNEL</string>
+    <string name="play_left">PLAY LEFT</string>
+    <string name="play_right">PLAY RIGHT</string>
+
+
+
 </resources>

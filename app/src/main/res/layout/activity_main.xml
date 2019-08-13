@@ -22,9 +22,9 @@
                 android:text="@string/wifi_btn"
                 android:textColor="@color/text_color_white"
                 android:textSize="@dimen/text_size24"
-                android:background="@color/btn_bg_color"
+                android:background="@drawable/button_bg"
                 android:layout_weight="1"
-                android:layout_margin="@dimen/padding_5"/>
+                android:layout_margin="@dimen/padding_5" />
             <Button
                 android:id="@+id/camera_btn"
                 android:layout_height="@dimen/padding_64"
@@ -33,7 +33,7 @@
                 android:layout_margin="@dimen/padding_5"
                 android:textColor="@color/text_color_white"
                 android:textSize="@dimen/text_size24"
-                android:background="@color/btn_bg_color"
+                android:background="@drawable/button_bg"
                 android:layout_weight="1"/>
         </LinearLayout>
         <LinearLayout
@@ -49,17 +49,17 @@
                 android:layout_margin="@dimen/padding_5"
                 android:textColor="@color/text_color_white"
                 android:textSize="@dimen/text_size24"
-                android:background="@color/btn_bg_color"
+                android:background="@drawable/button_bg"
                 android:layout_weight="1"/>
             <Button
                 android:id="@+id/play_btn"
                 android:layout_height="@dimen/padding_64"
                 android:layout_width="wrap_content"
-                android:text="@string/play_btn"
+                android:text="@string/play_1khz"
                 android:layout_margin="@dimen/padding_5"
                 android:textColor="@color/text_color_white"
                 android:textSize="@dimen/text_size24"
-                android:background="@color/btn_bg_color"
+                android:background="@drawable/button_bg"
                 android:layout_weight="1"/>
         </LinearLayout>
         <LinearLayout
@@ -75,7 +75,7 @@
                 android:layout_margin="@dimen/padding_5"
                 android:textColor="@color/text_color_white"
                 android:textSize="@dimen/text_size24"
-                android:background="@color/btn_bg_color"
+                android:background="@drawable/button_bg"
                 android:layout_weight="1"/>
             <Button
                 android:id="@+id/display_btn"
@@ -85,7 +85,7 @@
                 android:layout_margin="@dimen/padding_5"
                 android:textColor="@color/text_color_white"
                 android:textSize="@dimen/text_size24"
-                android:background="@color/btn_bg_color"
+                android:background="@drawable/button_bg"
                 android:layout_weight="1"/>
         </LinearLayout>
         <LinearLayout
@@ -101,7 +101,7 @@
                 android:layout_margin="@dimen/padding_5"
                 android:textColor="@color/text_color_white"
                 android:textSize="@dimen/text_size24"
-                android:background="@color/btn_bg_color"
+                android:background="@drawable/button_bg"
                 android:layout_weight="1"/>
             <Button
                 android:id="@+id/iperf_btn"
@@ -111,9 +111,60 @@
                 android:layout_margin="@dimen/padding_5"
                 android:textColor="@color/text_color_white"
                 android:textSize="@dimen/text_size24"
-                android:background="@color/btn_bg_color"
+                android:background="@drawable/button_bg"
                 android:layout_weight="1"/>
         </LinearLayout>
+
+
+
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3">
+            <Button
+                android:id="@+id/play_left_channel"
+                android:layout_height="@dimen/padding_64"
+                android:layout_width="wrap_content"
+                android:text="@string/play_left"
+                android:layout_margin="@dimen/padding_5"
+                android:textColor="@color/text_color_white"
+                android:textSize="@dimen/text_size24"
+                android:background="@drawable/button_bg"
+                android:layout_weight="1"/>
+            <Button
+                android:id="@+id/play_channel"
+                android:layout_height="@dimen/padding_64"
+                android:layout_width="wrap_content"
+                android:text="@string/play_channel"
+                android:layout_margin="@dimen/padding_5"
+                android:textColor="@color/text_color_white"
+                android:textSize="@dimen/text_size24"
+                android:background="@drawable/button_bg"
+                android:layout_weight="1"/>
+            <Button
+                android:id="@+id/play_right_channel"
+                android:layout_height="@dimen/padding_64"
+                android:layout_width="wrap_content"
+                android:text="@string/play_right"
+                android:layout_margin="@dimen/padding_5"
+                android:textColor="@color/text_color_white"
+                android:textSize="@dimen/text_size24"
+                android:background="@drawable/button_bg"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+
+
+
+
+
+
+
         <Button
             android:id="@+id/reset_btn"
             android:layout_height="@dimen/padding_64"
@@ -122,9 +173,9 @@
             android:layout_margin="@dimen/padding_5"
             android:textColor="@color/text_color_white"
             android:textSize="@dimen/text_size24"
-            android:background="@color/btn_bg_color"
+            android:background="@drawable/button_bg"
             android:layout_weight="1"/>
-        <TextView
+        <!--<TextView
             android:id="@+id/ip_address"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
@@ -132,7 +183,7 @@
             android:textSize="@dimen/text_size22"
             android:layout_marginLeft="@dimen/padding_20"
             android:layout_marginTop="@dimen/padding_50"
-            android:textColor="@color/btn_bg_color"/>
+            android:textColor="@color/btn_bg_color"/>-->
 
         <TextView
             android:id="@+id/txt_throughput"

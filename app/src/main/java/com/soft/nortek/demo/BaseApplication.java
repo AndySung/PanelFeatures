@@ -55,6 +55,8 @@ public class BaseApplication extends Application {
                 });
 
         customAdaptForExternal();
+        /**全局捕捉异常**/
+       //CrashHandler.getInstance().init(this);
     }
 
     /**

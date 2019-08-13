@@ -2,6 +2,7 @@ package com.soft.nortek.demo;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ContentUris;
 import android.content.Context;
@@ -71,12 +72,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String FILE_PROVIDER_AUTHORITY = "com.soft.nortek.demo.fileprovider";
     private Uri mImageUri, mImageUriFromFile;
     private File imageFile;
-    private Button WifiBtn,CameraBtn,RecordBtn,PlayBtn,TouchBtn,DisplayBtn,PlayRecBtn,IperfBtn,ResetBtn;
+    private Button WifiBtn,CameraBtn,RecordBtn,PlayBtn,TouchBtn,DisplayBtn,PlayRecBtn,IperfBtn,ResetBtn,PlayLeftBtn,PlayRightBtn,PlaySpeechBtn;
     private MediaPlayer mMediaPlayer = new MediaPlayer();
     private File recAudioFile;
     private MediaRecorder mMediaRecorder;
     private WifiManager wifiManager;
-    private TextView ipAddress,mShroughput;
+    private TextView mShroughput;
     private WifiManager mWm;
     private WifiConnector connector;
 
@@ -90,16 +91,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String iperfreply;
     private boolean IPERF_OK = false;
 
+    private File max1vFile;
+
     /**添加路径**/
-   // private static final String WIFI_DATA_FILE = "/data/data/com.soft.nortek.demo/wifidata.txt";
+    private static final String WIFI_DATA_FILE = "/data/data/com.soft.nortek.demo/files/wifidata.txt";
     //private static final String WIFI_DATA_ADD = "/data/data/com.soft.nortek.demo/";
     //private static final String MUSIC_ADD = "/data/data/com.soft.nortek.demo/";
-    //private static final String RECORD_ADD = "/data/data/com.soft.nortek.demo/";
-    private static final String WIFI_DATA_FILE = "/data/data/ATE/wifidata.txt";
-    private static final String WIFI_DATA_ADD = "/data/data/ATE/";
-    private static final String MUSIC_ADD = "/data/data/ATE/";
-    private static final String RECORD_ADD = "/data/data/ATE/";
-
+    private static final String RECORD_ADD = "/data/data/com.soft.nortek.demo/files/";
+//    private static final String WIFI_DATA_FILE = "/data/ATE/wifidata.txt";
+    private static final String WIFI_DATA_ADD = "/data/data/com.soft.nortek.demo/files/";
+    private static final String MUSIC_ADD = "/data/data/com.soft.nortek.demo/files/";
+    //private static final String RECORD_ADD = "/data/ATE/";
 
 
 
@@ -110,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initView();
         viewOnClick();
         wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        initMediaPlayer();//初始化播放器 MediaPlayer
+//        initMediaPlayer();//初始化播放器 MediaPlayer
 //        getPermission();
         /**将iperf文件拷贝到别处**/
         File file = new File(IPERF_PATH);
@@ -119,6 +121,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             copyiperf();
         }
         checkState_23orNew();
+
+        /**Copy文件夹assets文件到包名下**/
+        copy2data();
+    }
+
+    /**Copy文件夹assets文件到包名下**/
+    private void copy2data(){
+        copyAssetsFile2Phone(MainActivity.this,"wifidata.txt");
+        copyAssetsFile2Phone(MainActivity.this,"max_1k.wav");
+        copyAssetsFile2Phone(MainActivity.this,"speech.wav");
+        copyAssetsFile2Phone(MainActivity.this,"music.wav");
+        copyAssetsFile2Phone(MainActivity.this,"left.wav");
+        copyAssetsFile2Phone(MainActivity.this,"right.wav");
+    }
+
+
+    /**
+     * 将文件从assets目录，考贝到 /data/data/包名/files/ 目录中。assets 目录中的文件，会不经压缩打包至APK包中，使用时还应从apk包中导出来
+     * @param fileName 文件名,如aaa.txt
+     */
+    public static void copyAssetsFile2Phone(Activity activity, String fileName){
+        try {
+            InputStream inputStream = activity.getAssets().open(fileName);
+            Log.d("Andy-MainActivity", "inputStream: "+ inputStream);
+            //getFilesDir() 获得当前APP的安装路径 /data/data/包名/files 目录
+            File file = new File(activity.getFilesDir().getAbsolutePath() + File.separator + fileName);
+            Log.d("Andy-MainActivity", "copyAssetsFile2Phone: "+ file);
+            if(!file.exists() || file.length()==0) {
+                FileOutputStream fos =new FileOutputStream(file);//如果文件不存在，FileOutputStream会自动创建文件
+                int len=-1;
+                byte[] buffer = new byte[1024];
+                while ((len=inputStream.read(buffer))!=-1){
+                    fos.write(buffer,0,len);
+                }
+                fos.flush();//刷新缓存区
+                inputStream.close();
+                fos.close();
+                Log.i("Andy-","模型文件复制完毕");
+            } else {
+                Log.i("Andy-","模型文件已存在，无需复制");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void checkState_23orNew(){
@@ -152,9 +198,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if(!pm_request.checkPermissionForWriteExternalStorage()){
             pm_request.requestPermissionForWriteExternalStorage();
         }
-        ipAddress.setText("Wifi IP Address:"+getLocalIpAddress());
+       // ipAddress.setText("Wifi IP Address:"+getLocalIpAddress());
 
-        getRootCommand();
     }
 
 
@@ -167,11 +212,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     //初始化播放器 MediaPlayer
-    private void initMediaPlayer() {
+    private void initMediaPlayer(String childFile) {
         try {
             //File file = new File(Environment.getExternalStorageDirectory(), "max_1k.wav");
            // File file = new File("/mnt/sdcard/", "max_1k.wav");
-            File file = new File(MUSIC_ADD, "max_1k.wav");
+            File file = new File(MUSIC_ADD, childFile);
             mMediaPlayer.setDataSource(file.getPath());//指定音频文件路径
             mMediaPlayer.setLooping(true);//设置为循环播放
             mMediaPlayer.prepare();//初始化播放器MediaPlayer
@@ -186,7 +231,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (requestCode){
             case PermissionRequest.WRITE_EXTERNAL_STORAGE_PERMISSION_REQUEST_CODE:
                 if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    initMediaPlayer();
                     Toast.makeText(this,"Got Write_External_Storage permissions",Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(this, "Deny permissions and you will not be able to use the program.", Toast.LENGTH_LONG).show();
@@ -232,6 +276,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         PlayRecBtn.setOnClickListener(this);
         IperfBtn.setOnClickListener(this);
         ResetBtn.setOnClickListener(this);
+        PlayLeftBtn.setOnClickListener(this);
+        PlayRightBtn.setOnClickListener(this);
+        PlaySpeechBtn.setOnClickListener(this);
+
     }
 
     @SuppressLint("WifiManagerLeak")
@@ -245,9 +293,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         PlayRecBtn = findViewById(R.id.play_rec_btn);
         IperfBtn = findViewById(R.id.iperf_btn);
         ResetBtn = findViewById(R.id.reset_btn);
-        ipAddress = findViewById(R.id.ip_address);
+//        ipAddress = findViewById(R.id.ip_address);
         mShroughput = findViewById(R.id.txt_throughput);
         mWm = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        PlayLeftBtn = findViewById(R.id.play_left_channel);
+        PlayRightBtn = findViewById(R.id.play_right_channel);
+        PlaySpeechBtn = findViewById(R.id.play_channel);
 
     }
 
@@ -264,15 +315,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     return;
                 }else {
                     String fileContent = getFileContent(file);
-
+                    Log.i("Andy-"+TAG, "文件内容："+fileContent);
                     /**读取txt文件中的数据**/
                     String[] str = fileContent.split(";");
-                    Log.i("wifi------>:", fileContent);
                     String wifi_ssid = str[0];
                     String wifi_pwd = str[1];
                     final String SSID = wifi_ssid.substring(wifi_ssid.indexOf("<")+1,wifi_ssid.indexOf(">"));
                     final String PWD = wifi_pwd.substring(wifi_pwd.indexOf("{")+1,wifi_pwd.indexOf("}"));
-                    Log.i("Wifi File:",SSID + ":"+PWD);
+                    Log.i("Andy-"+TAG,"SSID:"+SSID+"\nPWD:"+PWD);
                     Toast.makeText(MainActivity.this, "SSID:"+SSID+"\nPWD:"+PWD,Toast.LENGTH_SHORT).show();
 
                     /**根据SSID和PWD连接Wi-Fi**/
@@ -280,6 +330,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     connector.connectWifi(SSID, PWD, WifiUtil.TYPE_WPA, new WifiConnector.WifiConnectCallBack() {
                         @Override
                         public void onConnectSucess(){
+                            Log.i("Andy-"+TAG,"connection succeeded！！");
                             Toast.makeText(MainActivity.this,"connection succeeded！！",Toast.LENGTH_SHORT).show();
                             ///连接成功后往文件里写Wi-Fi信号强度和Wi-Fi网速
                             //updateContent("/mnt/sdcard/wifidemo/wifidata.txt","wifi_ssid:<"+SSID+">;wifi_password:{" + PWD + "}" + "\n" + getSignalStrength(),false);
@@ -304,6 +355,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(goRecordActivity);
                 break;
             case R.id.play_btn:     //播放音乐
+                initMediaPlayer("max_1k.wav");
                 //如果没在播放中，立刻开始播放。
                 if(!mMediaPlayer.isPlaying()){
                     mMediaPlayer.start();
@@ -322,6 +374,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 recAudioFile = new File(RECORD_ADD, "new.amr");
                 //开始录音
                 startRecorder();
+                initMediaPlayer("music.wav");
                 //开始播放音乐，如果没在播放中，立刻开始播放
                 if(!mMediaPlayer.isPlaying()){
                     mMediaPlayer.start();
@@ -334,19 +387,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(this,"ip command:"+curIperfCmd,Toast.LENGTH_SHORT).show();
                 break;
             case R.id.reset_btn:
+                Log.i("Andy"+TAG,mMediaRecorder+"");
                 if (mMediaRecorder!=null) {
                     //停止录音
                     stopRecorder();
                 }else{
-                    Toast.makeText(MainActivity.this,"No recording, no music playing",Toast.LENGTH_SHORT).show();
+                    Log.i("Andy-"+TAG,"No recording");
+                    //Toast.makeText(MainActivity.this,"No recording, no music playing",Toast.LENGTH_SHORT).show();
                 }
                 //如果在播放中，立刻停止。
                 if(mMediaPlayer.isPlaying()){
                     mMediaPlayer.reset();
-                    initMediaPlayer();//初始化播放器 MediaPlayer
+                    //initMediaPlayer();//初始化播放器 MediaPlayer
                 }
                 PlayRecBtn.setEnabled(true);
                 PlayRecBtn.setTextColor(Color.WHITE);
+                break;
+            case R.id.play_left_channel:
+                initMediaPlayer("left.wav");
+                //开始播放音乐，如果没在播放中，立刻开始播放
+                if(!mMediaPlayer.isPlaying()){
+                    mMediaPlayer.start();
+                }
+                break;
+            case R.id.play_right_channel:
+                initMediaPlayer("right.wav");
+                //开始播放音乐，如果没在播放中，立刻开始播放
+                if(!mMediaPlayer.isPlaying()){
+                    mMediaPlayer.start();
+                }
+                break;
+            case R.id.play_channel:
+                initMediaPlayer("speech.wav");
+                //开始播放音乐，如果没在播放中，立刻开始播放
+                if(!mMediaPlayer.isPlaying()){
+                    mMediaPlayer.start();
+                }
                 break;
                 default:
                     break;
@@ -359,6 +435,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 调用系统录音，开始录音
      * **/
     private void startRecorder() {
+        Log.i("Andy-"+TAG,"start recording...");
         mMediaRecorder = new MediaRecorder();
         if (recAudioFile.exists()) {
             recAudioFile.delete();
@@ -379,12 +456,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void stopRecorder(){
         if (recAudioFile!=null) {
-            mMediaRecorder.stop();
+            mMediaRecorder.setOnErrorListener(null);
+            mMediaRecorder.setOnInfoListener(null);
+            mMediaRecorder.setPreviewDisplay(null);
+            try {
+                mMediaRecorder.stop();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            } catch (RuntimeException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             mMediaRecorder.release();
             mMediaRecorder = null;
         }
     }
-
 
     /**
      * 拍照
@@ -717,14 +804,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         //分行读取
                         while ((line = buffreader.readLine()) != null) {
                             content += line + "\n";
-                            Log.d("TestFile--->", content);
+                            Log.i("Andy-"+TAG, "文件内容："+content);
                         }
                         instream.close();//关闭输入流
                     }
                 } catch (java.io.FileNotFoundException e) {
-                    Log.d("TestFile", "The File doesn't not exist.");
+                    Log.d("Andy-"+TAG, "The File doesn't not exist.");
                 } catch (IOException e) {
-                    Log.d("TestFile", e.getMessage());
+                    Log.d("Andy-"+TAG, e.getMessage());
                 }
             }
         }

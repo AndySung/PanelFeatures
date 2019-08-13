@@ -36,7 +36,7 @@
                 android:text="@string/start_record_btn"
                 android:textColor="@color/text_color_white"
                 android:textSize="@dimen/text_size24"
-                android:background="@color/btn_bg_color"
+                android:background="@drawable/button_bg"
                 android:layout_weight="1"
                 android:layout_margin="@dimen/padding_5"/>
             <Button
@@ -47,7 +47,7 @@
                 android:layout_margin="@dimen/padding_5"
                 android:textColor="@color/text_color_white"
                 android:textSize="@dimen/text_size24"
-                android:background="@color/btn_bg_color"
+                android:background="@drawable/button_bg"
                 android:layout_weight="1"/>
         </LinearLayout>
         <TextView
@@ -72,7 +72,7 @@
                 android:layout_margin="@dimen/padding_5"
                 android:textColor="@color/text_color_white"
                 android:textSize="@dimen/text_size24"
-                android:background="@color/btn_bg_color"
+                android:background="@drawable/button_bg"
                 android:layout_weight="1"/>
             <Button
                 android:id="@+id/play_btn"
@@ -82,7 +82,7 @@
                 android:layout_margin="@dimen/padding_5"
                 android:textColor="@color/text_color_white"
                 android:textSize="@dimen/text_size24"
-                android:background="@color/btn_bg_color"
+                android:background="@drawable/button_bg"
                 android:layout_weight="1"/>
             <Button
                 android:id="@+id/stop_play_btn"
@@ -92,7 +92,7 @@
                 android:layout_margin="@dimen/padding_5"
                 android:textColor="@color/text_color_white"
                 android:textSize="@dimen/text_size24"
-                android:background="@color/btn_bg_color"
+                android:background="@drawable/button_bg"
                 android:layout_weight="1"/>
         </LinearLayout>
         <Button
@@ -103,7 +103,7 @@
             android:layout_margin="@dimen/padding_5"
             android:textColor="@color/text_color_white"
             android:textSize="@dimen/text_size24"
-            android:background="@color/btn_bg_color"
+            android:background="@drawable/button_bg"
             android:layout_weight="1"/>
     </LinearLayout>
 

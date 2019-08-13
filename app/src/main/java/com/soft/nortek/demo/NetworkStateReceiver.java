@@ -6,9 +6,10 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
-import android.widget.Toast;
+import android.util.Log;
 
 public class NetworkStateReceiver extends BroadcastReceiver {
+    private final String TAG = getClass().getSimpleName();
     private final String tag = "WIFI链接状况";
 
     @Override
@@ -26,17 +27,16 @@ public class NetworkStateReceiver extends BroadcastReceiver {
             //获取移动数据连接的信息
             NetworkInfo dataNetworkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
             if (wifiNetworkInfo.isConnected() && dataNetworkInfo.isConnected()) {
-                Toast.makeText(context, "WIFI已连接,移动数据已连接", Toast.LENGTH_SHORT).show();
+                Log.i("Andy-"+TAG,"WIFI已连接,移动数据已连接");
             } else if (wifiNetworkInfo.isConnected() && !dataNetworkInfo.isConnected()) {
-                Toast.makeText(context, "WIFI已连接,移动数据已断开", Toast.LENGTH_SHORT).show();
+                Log.i("Andy-"+TAG,"WIFI已连接,移动数据已断开");
             } else if (!wifiNetworkInfo.isConnected() && dataNetworkInfo.isConnected()) {
-                Toast.makeText(context, "WIFI已断开,移动数据已连接", Toast.LENGTH_SHORT).show();
+                Log.i("Andy-"+TAG,"WIFI已断开,移动数据已连接");
             } else {
-                Toast.makeText(context, "WIFI已断开,移动数据已断开", Toast.LENGTH_SHORT).show();
+                Log.i("Andy-"+TAG,"WIFI已断开,移动数据已断开");
             }
 //API大于23时使用下面的方式进行网络监听
         }else {
-
             System.out.println("API level 大于23");
             //获得ConnectivityManager对象
             ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -51,7 +51,8 @@ public class NetworkStateReceiver extends BroadcastReceiver {
                 NetworkInfo networkInfo = connMgr.getNetworkInfo(networks[i]);
                 sb.append(networkInfo.getTypeName() + " connect is " + networkInfo.isConnected());
             }
-            Toast.makeText(context, sb.toString(),Toast.LENGTH_SHORT).show();
+            Log.i("Andy-"+TAG,"API level 大于23:"+sb.toString());
+           //Toast.makeText(context, sb.toString(),Toast.LENGTH_SHORT).show();
         }
     }
 }
