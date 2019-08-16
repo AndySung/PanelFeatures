@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/padding_66"
+    android:orientation="horizontal"
+    android:background="@color/btn_bg_color">
+
+    <Button
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/padding_66"
+        android:text="Back"
+        android:layout_marginLeft="@dimen/padding_10"
+        android:background="@null"
+        android:textColor="@color/text_color_white"
+        android:textSize="34sp"/>
+
+    <TextView
+        android:id="@+id/title_bar_title"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/text_color_white"
+        android:textSize="@dimen/text_size33"
+        android:gravity="center" />
+
+    <Button
+        android:id="@+id/new_file"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/padding_66"
+        android:text="new"
+        android:background="@null"
+        android:visibility="gone"
+        android:layout_marginRight="10dp"
+        android:textColor="@color/text_color_white"
+        android:textSize="30sp" />
+    <Button
+        android:id="@+id/paste_file"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/padding_66"
+        android:text="Paste"
+        android:textColor="@color/text_color_white"
+        android:background="@null"
+        android:visibility="gone"
+        android:layout_marginRight="10dp"
+        android:textSize="30sp" />
+</LinearLayout>

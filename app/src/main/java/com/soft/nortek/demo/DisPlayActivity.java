@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class DisPlayActivity extends Activity {
     private ImageView colorImg;
     private Button displayBackBtn;
+    private TextView titleBatTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,7 +19,10 @@ public class DisPlayActivity extends Activity {
         colorImg = findViewById(R.id.color_img);
         colorImg.setImageResource(R.mipmap.colors);
 
-        displayBackBtn = findViewById(R.id.display_back);
+        titleBatTitle = findViewById(R.id.title_bar_title);
+        titleBatTitle.setText("Colors");
+
+        displayBackBtn = findViewById(R.id.back);
 
         displayBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -47,6 +47,7 @@ public class WifiIperfActivity extends Activity implements View.OnClickListener,
     private static String curIperfCmd = iperfServiceCmd;
     private boolean IPERF_OK = false;
     private Switch mSwitch;
+    private TextView titleBarTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,12 +65,12 @@ public class WifiIperfActivity extends Activity implements View.OnClickListener,
     @SuppressLint("WifiManagerLeak")
     private void initView() {
         findViewById(R.id.btn_wifi_throughput).setOnClickListener(this);
-        findViewById(R.id.iperf_back).setOnClickListener(this);
+        findViewById(R.id.back).setOnClickListener(this);
 
         mAddress =  findViewById(R.id.wifi_address);
         mShroughput = findViewById(R.id.wifi_throughput_show);
         mSignalStrength = findViewById(R.id.wifi_signal_strength);
-        backBtn = findViewById(R.id.iperf_back);
+        backBtn = findViewById(R.id.back);
         ///Wi-Fi管理类
         mWm = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         mSwitch = findViewById(R.id.wifi_switch);
@@ -80,6 +81,8 @@ public class WifiIperfActivity extends Activity implements View.OnClickListener,
         mAddress.setText(getLocalIpAddress());
         //获取wifi信号强度
         mSignalStrength.setText(getSignalStrength());
+        titleBarTitle = findViewById(R.id.title_bar_title);
+        titleBarTitle.setText("IPerf Test");
     }
 
     @Override
@@ -90,7 +93,7 @@ public class WifiIperfActivity extends Activity implements View.OnClickListener,
                 Toast.makeText(this,"ip command:"+iperfClientCmd,Toast.LENGTH_SHORT).show();
                 sercomfun(curIperfCmd);
                 break;
-            case R.id.iperf_back:
+            case R.id.back:
                 finish();
                 break;
         }

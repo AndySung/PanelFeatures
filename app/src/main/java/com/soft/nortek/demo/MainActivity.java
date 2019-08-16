@@ -29,7 +29,6 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -38,6 +37,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.rmondjone.camera.CameraActivity;
+import com.soft.nortek.demo.filesmanage.Files_Manage_Activity;
+import com.soft.nortek.demo.offlinefiles.Offline_Files_Choose_Activity;
 import com.soft.nortek.demo.wifiiperf.CommandHelper;
 import com.soft.nortek.demo.wifiiperf.CommandResult;
 import com.tj24.easywifi.wifi.WifiConnector;
@@ -48,14 +50,12 @@ import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.text.SimpleDateFormat;
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String FILE_PROVIDER_AUTHORITY = "com.soft.nortek.demo.fileprovider";
     private Uri mImageUri, mImageUriFromFile;
     private File imageFile;
-    private Button WifiBtn,CameraBtn,RecordBtn,PlayBtn,TouchBtn,DisplayBtn,PlayRecBtn,IperfBtn,ResetBtn,PlayLeftBtn,PlayRightBtn,PlaySpeechBtn;
+    private Button WifiBtn,CameraBtn,RecordBtn,PlayBtn,TouchBtn,DisplayBtn,PlayRecBtn,IperfBtn,ResetBtn,PlayLeftBtn,PlayRightBtn,PlaySpeechBtn,filesBtn,bluetoothBtn,networkBtn;
     private MediaPlayer mMediaPlayer = new MediaPlayer();
     private File recAudioFile;
     private MediaRecorder mMediaRecorder;
@@ -91,18 +91,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String iperfreply;
     private boolean IPERF_OK = false;
 
-    private File max1vFile;
 
     /**添加路径**/
-    private static final String WIFI_DATA_FILE = "/data/data/com.soft.nortek.demo/files/wifidata.txt";
-    //private static final String WIFI_DATA_ADD = "/data/data/com.soft.nortek.demo/";
-    //private static final String MUSIC_ADD = "/data/data/com.soft.nortek.demo/";
-    private static final String RECORD_ADD = "/data/data/com.soft.nortek.demo/files/";
-//    private static final String WIFI_DATA_FILE = "/data/ATE/wifidata.txt";
-    private static final String WIFI_DATA_ADD = "/data/data/com.soft.nortek.demo/files/";
-    private static final String MUSIC_ADD = "/data/data/com.soft.nortek.demo/files/";
-    //private static final String RECORD_ADD = "/data/ATE/";
-
+    private static String WIFI_DATA_FILE = "";
+    private static String PLAYAUDIO = "";
 
 
     @Override
@@ -111,9 +103,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         initView();
         viewOnClick();
+
+        /**初始化目录**/
+        WIFI_DATA_FILE = "/data/data/"+AppUtils.getPackageName(MainActivity.this)+"/files/wifidata.txt";
+        PLAYAUDIO = "/data/data/"+AppUtils.getPackageName(MainActivity.this)+"/files/";
+
+        /**wifi管理类**/
         wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-//        initMediaPlayer();//初始化播放器 MediaPlayer
-//        getPermission();
         /**将iperf文件拷贝到别处**/
         File file = new File(IPERF_PATH);
         Log.i(TAG,"file.exists(): "+file.exists());
@@ -216,7 +212,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         try {
             //File file = new File(Environment.getExternalStorageDirectory(), "max_1k.wav");
            // File file = new File("/mnt/sdcard/", "max_1k.wav");
-            File file = new File(MUSIC_ADD, childFile);
+            File file = new File(PLAYAUDIO, childFile);
+            //Toast.makeText(MainActivity.this,PLAYAUDIO,Toast.LENGTH_SHORT).show();
             mMediaPlayer.setDataSource(file.getPath());//指定音频文件路径
             mMediaPlayer.setLooping(true);//设置为循环播放
             mMediaPlayer.prepare();//初始化播放器MediaPlayer
@@ -279,6 +276,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         PlayLeftBtn.setOnClickListener(this);
         PlayRightBtn.setOnClickListener(this);
         PlaySpeechBtn.setOnClickListener(this);
+        filesBtn.setOnClickListener(this);
+        bluetoothBtn.setOnClickListener(this);
+        networkBtn.setOnClickListener(this);
 
     }
 
@@ -299,6 +299,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         PlayLeftBtn = findViewById(R.id.play_left_channel);
         PlayRightBtn = findViewById(R.id.play_right_channel);
         PlaySpeechBtn = findViewById(R.id.play_channel);
+        filesBtn = findViewById(R.id.document_manager);
+        bluetoothBtn = findViewById(R.id.bluetooth_transmission);
+        networkBtn = findViewById(R.id.wifi_transmission);
 
     }
 
@@ -348,7 +351,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case R.id.camera_btn:
-                takePhoto();
+                //takePhoto();
+                CameraActivity.startMe(this, 2005, CameraActivity.MongolianLayerType.IDCARD_POSITIVE);
                 break;
             case R.id.record_btn:
                 Intent goRecordActivity = new Intent(MainActivity.this, RecordActivity.class);
@@ -371,7 +375,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.play_rec_btn:
                 //创建录音文件
-                recAudioFile = new File(RECORD_ADD, "new.amr");
+                recAudioFile = new File(PLAYAUDIO, "new.amr");
                 //开始录音
                 startRecorder();
                 initMediaPlayer("music.wav");
@@ -423,6 +427,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if(!mMediaPlayer.isPlaying()){
                     mMediaPlayer.start();
                 }
+                break;
+            case R.id.document_manager:
+                /**菜单中文件管理选项，跳转到文件管理的Activity进行文件管理的操作*/
+                Intent intent = new Intent(MainActivity.this, Files_Manage_Activity.class);
+                startActivity(intent);
+                break;
+            case R.id.bluetooth_transmission:
+                /**用系统的蓝牙模块来发送文件*/
+                Intent BluetoothIntent = new Intent(getApplicationContext(), Offline_Files_Choose_Activity.class);
+                BluetoothIntent.putExtra("Type", "bluetooth");
+                startActivityForResult(BluetoothIntent, 0);
+                break;
+            case R.id.wifi_transmission:
+                Intent wifiTransferIntent = new Intent(MainActivity.this, WiFiTransferActivity.class);
+                startActivity(wifiTransferIntent);
                 break;
                 default:
                     break;
@@ -499,58 +518,87 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**相机或者相册返回来的数据**/
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case TAKE_PHOTO:
-                if (resultCode == RESULT_OK) {
-                    try {
-                        /*如果拍照成功，将Uri用BitmapFactory的decodeStream方法转为Bitmap*/
-                        Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(mImageUri));
-                        Log.i(TAG, "onActivityResult: imageUri " + mImageUri);
-                        galleryAddPic(mImageUriFromFile);
-                        //mPicture.setImageBitmap(bitmap);//显示到ImageView上
-                        //拍照成功后保存
-                        AlertDialog.Builder saveDialog = new AlertDialog.Builder(MainActivity.this);
-                        saveDialog.setTitle("Tips");
-                        saveDialog.setMessage("Image's address:"+mImageUriFromFile);
-                        saveDialog.setPositiveButton("ok", null);
-                        /*saveDialog.setNeutralButton("Check", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                if (imageFile != null) {
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                        *//*7.0以上要通过FileProvider将File转化为Uri*//*
-                                        mImageUri = FileProvider.getUriForFile(MainActivity.this, FILE_PROVIDER_AUTHORITY, imageFile);
-                                    } else {
-                                        *//*7.0以下则直接使用Uri的fromFile方法将File转化为Uri*//*
-                                        mImageUri = Uri.fromFile(imageFile);
-                                    }
-                                    openAssignFolder(mImageUri.getPath());
-                                }
-                            }
-                        });*/
-                        saveDialog.show();
+        //选择了文件发送
+        if (resultCode == RESULT_OK) {
+            String type = data.getStringExtra("Type");
+            if (type.equals("intenet")) {
+                //将选择的文件的名字以及路径存储下来
+                final String fileName = data.getStringExtra("FileName");
+                final String path = data.getStringExtra("FilePath");
+                System.out.println("0000000000000000000000000000000000000000000000000000000000000000" + path);
+                System.out.println("0000000000000000000000000000000000000000000000000000000000000000" + fileName);
+                //String uploadUrl = "http://192.168.1.147/OfflineTrans/AndroidUploadAction.php";
+                String uploadUrl = "http://115.28.101.196/AndroidUploadAction.php";
+                //new HttpThread_UpLoad(uploadUrl, path).start();//启动文件上传的线程
+            } else if (type.equals("bluetooth")) {
+                String path = data.getStringExtra("FilePath");
+                File file = new File(path);
 
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-            case CHOOSE_PHOTO:
-                if (data == null) {//如果没有拍照或没有选取照片，则直接返回
-                    return;
-                }
-                Log.i(TAG, "onActivityResult: ImageUriFromAlbum: " + data.getData());
-                if (resultCode == RESULT_OK) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                        handleImageOnKitKat(data);//4.4之后图片解析
-                    } else {
-                        handleImageBeforeKitKat(data);//4.4之前图片解析
-                    }
-                }
-                break;
-            default:
-                break;
+                Uri uri = Uri.fromFile(file);
+
+                //打开系统蓝牙模块并发送文件
+                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+                sharingIntent.setType("*/*");
+                sharingIntent.setPackage("com.android.bluetooth");
+                sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);
+                startActivity(Intent.createChooser(sharingIntent, "Share"));
+
+                Log.d("MainActivity", uri.getPath());//log打印返回的文件路径
+            }
         }
+//        switch (requestCode) {
+//            case TAKE_PHOTO:
+//                if (resultCode == RESULT_OK) {
+//                    try {
+//                        /*如果拍照成功，将Uri用BitmapFactory的decodeStream方法转为Bitmap*/
+//                        Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(mImageUri));
+//                        Log.i(TAG, "onActivityResult: imageUri " + mImageUri);
+//                        galleryAddPic(mImageUriFromFile);
+//                        //mPicture.setImageBitmap(bitmap);//显示到ImageView上
+//                        //拍照成功后保存
+//                        AlertDialog.Builder saveDialog = new AlertDialog.Builder(MainActivity.this);
+//                        saveDialog.setTitle("Tips");
+//                        saveDialog.setMessage("Image's address:"+mImageUriFromFile);
+//                        saveDialog.setPositiveButton("ok", null);
+//                        /*saveDialog.setNeutralButton("Check", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialogInterface, int i) {
+//                                if (imageFile != null) {
+//                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                                        *//*7.0以上要通过FileProvider将File转化为Uri*//*
+//                                        mImageUri = FileProvider.getUriForFile(MainActivity.this, FILE_PROVIDER_AUTHORITY, imageFile);
+//                                    } else {
+//                                        *//*7.0以下则直接使用Uri的fromFile方法将File转化为Uri*//*
+//                                        mImageUri = Uri.fromFile(imageFile);
+//                                    }
+//                                    openAssignFolder(mImageUri.getPath());
+//                                }
+//                            }
+//                        });*/
+//                        saveDialog.show();
+//
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                break;
+//            case CHOOSE_PHOTO:
+//                if (data == null) {//如果没有拍照或没有选取照片，则直接返回
+//                    return;
+//                }
+//                Log.i(TAG, "onActivityResult: ImageUriFromAlbum: " + data.getData());
+//                if (resultCode == RESULT_OK) {
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//                        handleImageOnKitKat(data);//4.4之后图片解析
+//                    } else {
+//                        handleImageBeforeKitKat(data);//4.4之前图片解析
+//                    }
+//                }
+//                break;
+//            default:
+//                break;
+//        }
+
     }
 
     /**
@@ -677,14 +725,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * 写入文件到本地(这里编写一个名为wifidata的txt文件，内容为wifi_ssid:Andy's iPhone; wifi_password:song0123.com)
      * **/
-    private void WriteWifiData() {
-       // String filePath =Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)+"/";
-        //String fileName = "wifi_data.txt";
-        //String filePath = "/mnt/sdcard/wifidemo/";
+    /*private void WriteWifiData() {
         String filePath = WIFI_DATA_ADD;
         String fileName = "wifidata.txt";
         writeTxtToFile("wifi_ssid:<HUAWEI P9>;wifi_password:{song0123.com}", filePath, fileName);
-    }
+    }*
 
     // 将字符串写入到文本文件中
     private void writeTxtToFile(String strcontent, String filePath, String fileName) {
@@ -831,9 +876,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         byte[] content_byte = outStream.toByteArray();
         String content = new String(content_byte);
         return content;
-
     }
-
 
 
     /// Iperf 相关功能
@@ -874,8 +917,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return result;
     }
-
-
 
     private Handler handler = new Handler() {
         @Override
@@ -988,8 +1029,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return result;
     }
-
-
 
 //    //获取权限
 //    private void getPermission() {

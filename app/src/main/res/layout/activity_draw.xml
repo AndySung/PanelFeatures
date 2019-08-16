@@ -6,19 +6,7 @@
     android:orientation="vertical"
     >
 
-    <LinearLayout
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:minHeight="?attr/actionBarSize"
-        android:background="?attr/colorPrimary" >
-        <Button android:id="@+id/draw_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#00000000"
-            android:textColor="@color/text_color_white"
-            android:text="Back"
-            android:textSize="@dimen/text_size20"/>
-    </LinearLayout>
+    <include layout="@layout/titlebar"/>
 
     <com.soft.nortek.demo.PaletteView
         android:id="@+id/palette"

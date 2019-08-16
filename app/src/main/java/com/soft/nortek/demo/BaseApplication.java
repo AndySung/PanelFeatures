@@ -2,9 +2,11 @@ package com.soft.nortek.demo;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
+import android.os.Looper;
 
+import java.lang.ref.WeakReference;
 import java.util.Locale;
+import java.util.Stack;
 
 import cat.ereza.customactivityoncrash.activity.DefaultErrorActivity;
 import me.jessyan.autosize.AutoSize;
@@ -21,11 +23,22 @@ import me.jessyan.autosize.utils.LogUtils;
  * **/
 
 public class BaseApplication extends Application {
-    public static Context context;//需要使用的上下文对象
+    private static final String TAG = BaseApplication.class.getSimpleName();
+    private static android.os.Handler mMainThreadHandler;
+    private static Looper mMainThreadLooper;
+    private static Thread mMainThread;
+
+    public static BaseApplication mContext;//需要使用的上下文对象
+
+    /*** 寄存整个应用Activity **/
+    private final Stack<WeakReference<Activity>> mActivities = new Stack<>();
 
     @Override
     public void onCreate() {
         super.onCreate();
+        initMainParams();
+        CrashHandler.getInstance().init(this);
+
         AutoSize.initCompatMultiProcess(this);
         AutoSizeConfig.getInstance()
 
@@ -59,6 +72,13 @@ public class BaseApplication extends Application {
        //CrashHandler.getInstance().init(this);
     }
 
+    private void initMainParams() {
+        mContext = this;
+        mMainThreadLooper = getMainLooper();
+        mMainThreadHandler = new android.os.Handler(mMainThreadLooper);
+        mMainThread = Thread.currentThread();
+    }
+
     /**
      * 给外部的三方库 {@link Activity} 自定义适配参数, 因为三方库的 {@link Activity} 并不能通过实现
      * {@link CustomAdapt} 接口的方式来提供自定义适配参数 (因为远程依赖改不了源码)
@@ -87,4 +107,106 @@ public class BaseApplication extends Application {
     }
 
 
+    /**
+     * 获取全局上下文
+     * @return the context
+     */
+
+    public static BaseApplication getApplication(){
+        return mContext;
+    }
+
+    /**
+     * 获取主线程Handler
+     * @return the mMainThreadHandler
+     */
+    public static android.os.Handler getMainThreadHandler() {
+        return mMainThreadHandler;
+    }
+
+
+    /**
+     * 获取主线程
+     * @return the mMainThread
+     */
+    public static Thread getMainThread() {
+        return mMainThread;
+    }
+
+    /**
+     * 将Activity压入Application栈
+     * @param task 将要压入栈的Activity对象
+     */
+    public void pushTask(WeakReference<Activity> task){
+        mActivities.push(task);
+    }
+
+    /**
+     * 将传入的Activity对象从栈中移除
+     *
+     * @param task 将要移除栈的Activity对象
+     */
+    public void removeTask(WeakReference<Activity> task) {
+        mActivities.remove(task);
+    }
+
+
+    /**
+     * 关闭某个activity
+     *
+     * @param activityCls 指定activity的类 eg：MainActivity.class
+     */
+    public void finishActivity(Class<? extends Activity> activityCls) {
+        int end = mActivities.size();
+        for (int i = end - 1; i >= 0; i--) {
+            Activity cacheActivity = mActivities.get(i).get();
+            if (cacheActivity.getClass().getSimpleName().equals(activityCls.getSimpleName()) && !cacheActivity.isFinishing()) {
+                cacheActivity.finish();
+                removeTask(i);
+            }
+        }
+    }
+
+    /**
+     * 根据指定位置从栈中移除Activity
+     *
+     * @param taskIndex Activity栈索引
+     */
+    public void removeTask(int taskIndex) {
+        if (mActivities.size() > taskIndex)
+            mActivities.remove(taskIndex);
+    }
+
+    /** 获取顶层activity */
+    public Activity getTopActivity() {
+        if (mActivities.size() > 0) {
+            return mActivities.get(mActivities.size() - 1).get();
+        }
+        return null;
+    }
+
+    /** 移除全部（用于整个应用退出） */
+    public void removeAll() {
+        int end = mActivities.size();
+        for (int i = end - 1; i >= 0; i--) {
+            Activity activity = mActivities.get(i).get();
+            if (!activity.isFinishing()) {
+                activity.finish();
+            }
+        }
+        mActivities.clear();
+    }
+
+
+    /** 移除除第一个MainActivity之外的全部（主要用于回到MainActivity） */
+    public void removeAllExceptFirst() {
+        int end = mActivities.size();
+        for (int i = end - 1; i >= 1; i--) {
+            Activity activity = mActivities.get(i).get();
+            if (!activity.isFinishing()) {
+                activity.finish();
+            }
+            removeTask(i);
+        }
+    }
 }

@@ -3,9 +3,13 @@
     <color name="colorPrimary">#4573c1</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="color_green">#00eaca</color>
-    <color name="colorAccent">#D81B60</color>
     <color name="btn_bg_color">#4573c8</color>
     <color name="btn_checked_bg_color">#4513ff</color>
     <color name="text_color_white">#ffffff</color>
     <color name="text_color_gray">#57595d</color>
+    <color name="text_second_color_primary">#727272</color>
+    <color name="light_grey_cc">#CCCCCC</color>
+
+    <color name="colorWifiConnected">#6495ED</color>
+    <color name="colorAccent">#0088FF</color>
 </resources>

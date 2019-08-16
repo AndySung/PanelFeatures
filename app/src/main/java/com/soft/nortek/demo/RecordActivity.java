@@ -19,13 +19,12 @@ import java.util.Date;
 public class RecordActivity extends Activity implements View.OnClickListener {
     private final String TAG = getClass().getSimpleName();
     private Button startRecBtn,stopRecBtn,playBtn,pauseBtn,stopBtn,deleteAllFileBtn,BackBtn;
-    private TextView recordAddress;
+    private TextView recordAddress,titleBarTitle;
     private MediaRecorder mMediaRecorder;
     ///以文件形式保存
     private File recordFile;
     private RecordPlayer mPlayer;
-    //private static final String RECORD_ADD = "/data/ATE/";
-    private static final String RECORD_ADD = "/data/data/com.soft.nortek.demo/files";
+    private static String RECORD_ADD = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +32,12 @@ public class RecordActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_record);
         initView();
         viewOnClick();
+        RECORD_ADD = "/data/data/"+AppUtils.getPackageName(RecordActivity.this)+"/files/";
     }
 
     private File createRecordFile() {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "Record_" + timeStamp + "_";
-        //File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC);
-        //File sdCard = Environment.getExternalStorageDirectory();
         isFolderExists(RECORD_ADD+"/"+"record");
         File storageDir = new File(RECORD_ADD, "record");
         File imageFile = null;
@@ -70,8 +68,9 @@ public class RecordActivity extends Activity implements View.OnClickListener {
         stopBtn = findViewById(R.id.stop_play_btn);
         recordAddress = findViewById(R.id.record_address);
         deleteAllFileBtn = findViewById(R.id.delete_all_file);
-
-        BackBtn = findViewById(R.id.record_back);
+        BackBtn = findViewById(R.id.back);
+        titleBarTitle = findViewById(R.id.title_bar_title);
+        titleBarTitle.setText("Recording");
 
         //刚开始进去
         stopRecBtn.setVisibility(View.INVISIBLE);
@@ -83,10 +82,11 @@ public class RecordActivity extends Activity implements View.OnClickListener {
         if(isExist == true){
             playBtn.setVisibility(View.VISIBLE);
             playBtn.setTextColor(Color.WHITE);
-            pauseBtn.setVisibility(View.VISIBLE);
+            pauseBtn.setVisibility(View.INVISIBLE);
             pauseBtn.setTextColor(Color.WHITE);
-            stopBtn.setVisibility(View.VISIBLE);
+            stopBtn.setVisibility(View.INVISIBLE);
             stopBtn.setTextColor(Color.WHITE);
+            deleteAllFileBtn.setVisibility(View.VISIBLE);
         }else{
             playBtn.setVisibility(View.INVISIBLE);
             playBtn.setTextColor(Color.GRAY);
@@ -94,6 +94,7 @@ public class RecordActivity extends Activity implements View.OnClickListener {
             pauseBtn.setTextColor(Color.GRAY);
             stopBtn.setVisibility(View.INVISIBLE);
             stopBtn.setTextColor(Color.GRAY);
+            deleteAllFileBtn.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -124,8 +125,9 @@ public class RecordActivity extends Activity implements View.OnClickListener {
 
             case R.id.delete_all_file:
                 deleteAllFiles(new File(RECORD_ADD, "record"));
+                recordAddress.setText("The files have all been deleted");
                 break;
-            case R.id.record_back:
+            case R.id.back:
                 finish();
                 break;
                 default:
@@ -202,6 +204,7 @@ public class RecordActivity extends Activity implements View.OnClickListener {
         startRecBtn.setTextColor(Color.WHITE);
         stopRecBtn.setVisibility(View.INVISIBLE);
         stopRecBtn.setTextColor(Color.GRAY);
+        deleteAllFileBtn.setVisibility(View.VISIBLE);
 
         RePlay(true);
     }
@@ -214,6 +217,10 @@ public class RecordActivity extends Activity implements View.OnClickListener {
         }else{
             Toast.makeText(RecordActivity.this,"Record file not exists",Toast.LENGTH_SHORT).show();
         }
+        pauseBtn.setVisibility(View.VISIBLE);
+        pauseBtn.setTextColor(Color.WHITE);
+        stopBtn.setVisibility(View.VISIBLE);
+        stopBtn.setTextColor(Color.WHITE);
     }
 
     private void pauseplayer() {
@@ -269,5 +276,6 @@ public class RecordActivity extends Activity implements View.OnClickListener {
                     }
                 }
             }
+        RePlay(false);
     }
 }

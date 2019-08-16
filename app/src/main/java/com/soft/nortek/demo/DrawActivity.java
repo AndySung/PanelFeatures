@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -32,7 +33,7 @@ public class DrawActivity extends Activity implements PaletteView.Callback, Hand
     private static final int MSG_SAVE_SUCCESS = 1;
     private static final int MSG_SAVE_FAILED = 2;
     private Handler mHandler;
-
+    private TextView titleBarTitle;
     private Button drawBackBtn;
 
     @Override
@@ -42,8 +43,10 @@ public class DrawActivity extends Activity implements PaletteView.Callback, Hand
 
         mPaletteView = findViewById(R.id.palette);
         mPaletteView.setCallback(this);
+        titleBarTitle = findViewById(R.id.title_bar_title);
+        titleBarTitle.setText("Drawing");
 
-        drawBackBtn = findViewById(R.id.draw_back);
+        drawBackBtn = findViewById(R.id.back);
         drawBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
