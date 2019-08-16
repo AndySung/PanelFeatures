@@ -1,2 +1,2 @@
-include ':app', ':easywificonnect', ':Camera'
+include ':app', ':easywificonnect', ':Camera', ':recorderlib'
 project(':easywificonnect').projectDir = new File('easywifi')

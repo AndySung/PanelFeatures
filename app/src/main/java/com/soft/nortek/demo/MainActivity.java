@@ -355,7 +355,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 CameraActivity.startMe(this, 2005, CameraActivity.MongolianLayerType.IDCARD_POSITIVE);
                 break;
             case R.id.record_btn:
-                Intent goRecordActivity = new Intent(MainActivity.this, RecordActivity.class);
+                Intent goRecordActivity = new Intent(MainActivity.this, RecordActivity1.class);
                 startActivity(goRecordActivity);
                 break;
             case R.id.play_btn:     //播放音乐

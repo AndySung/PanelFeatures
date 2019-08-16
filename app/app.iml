@@ -162,8 +162,7 @@
     <orderEntry type="library" name="Gradle: com.github.RmondJone:SpringDiaLog:1.0.6@aar" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support.constraint:constraint-layout-solver:1.1.3@jar" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: net.sf.kxml:kxml2:2.3.0@jar" level="project" />
-    <orderEntry type="module" module-name="easywificonnect" />
-    <orderEntry type="module" module-name="Camera" />
+    <orderEntry type="module" module-name="recorderlib" />
     <orderEntry type="module" module-name="easywificonnect" />
     <orderEntry type="module" module-name="Camera" />
   </component>

@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/PanelFeatures.iml" filepath="$PROJECT_DIR$/PanelFeatures.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/easywifi/easywificonnect.iml" filepath="$PROJECT_DIR$/easywifi/easywificonnect.iml" />
+      <module fileurl="file://$PROJECT_DIR$/recorderlib/recorderlib.iml" filepath="$PROJECT_DIR$/recorderlib/recorderlib.iml" />
     </modules>
   </component>
 </project>

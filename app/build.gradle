@@ -48,6 +48,7 @@ dependencies {
 
     implementation project(':easywificonnect')
     implementation project(':Camera')
+    implementation project(':recorderlib')
 
 
 

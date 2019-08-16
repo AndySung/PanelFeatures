@@ -4,6 +4,10 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Looper;
 
+import com.zlw.main.recorderlib.recorder.wav.WavUtils;
+import com.zlw.main.recorderlib.utils.ByteUtils;
+import com.zlw.main.recorderlib.utils.Logger;
+
 import java.lang.ref.WeakReference;
 import java.util.Locale;
 import java.util.Stack;
@@ -27,6 +31,7 @@ public class BaseApplication extends Application {
     private static android.os.Handler mMainThreadHandler;
     private static Looper mMainThreadLooper;
     private static Thread mMainThread;
+    private static BaseApplication instance;
 
     public static BaseApplication mContext;//需要使用的上下文对象
 
@@ -36,6 +41,7 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
         initMainParams();
         CrashHandler.getInstance().init(this);
 
@@ -70,6 +76,19 @@ public class BaseApplication extends Application {
         customAdaptForExternal();
         /**全局捕捉异常**/
        //CrashHandler.getInstance().init(this);
+
+        Logger.w("zlwTest", "TEST-----------------");
+        byte[] header1 = WavUtils.generateWavFileHeader(1024, 16000, 1, 16);
+        byte[] header2 = WavUtils.generateWavFileHeader(1024, 16000, 1, 16);
+
+        Logger.d("zlwTest", "Wav1: %s", WavUtils.headerToString(header1));
+        Logger.d("zlwTest", "Wav2: %s", WavUtils.headerToString(header2));
+
+        Logger.w("zlwTest", "TEST-2----------------");
+
+        Logger.d("zlwTest", "Wav1: %s", ByteUtils.toString(header1));
+        Logger.d("zlwTest", "Wav2: %s", ByteUtils.toString(header2));
+
     }
 
     private void initMainParams() {
@@ -166,6 +185,12 @@ public class BaseApplication extends Application {
             }
         }
     }
+
+
+    public static BaseApplication getInstance() {
+        return instance;
+    }
+
 
     /**
      * 根据指定位置从栈中移除Activity
