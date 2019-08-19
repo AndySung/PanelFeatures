@@ -1,5 +1,6 @@
 package com.soft.nortek.demo;
 
+import android.media.AudioFormat;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
@@ -22,6 +23,7 @@ import com.zlw.main.recorderlib.recorder.listener.RecordFftDataListener;
 import com.zlw.main.recorderlib.recorder.listener.RecordResultListener;
 import com.zlw.main.recorderlib.recorder.listener.RecordSoundSizeListener;
 import com.zlw.main.recorderlib.recorder.listener.RecordStateListener;
+import com.zlw.main.recorderlib.recorder.player.PlayDialog;
 import com.zlw.main.recorderlib.utils.Logger;
 
 import java.io.File;
@@ -29,8 +31,8 @@ import java.util.Locale;
 
 public class RecordActivity1 extends AppCompatActivity implements View.OnClickListener{
     private static final String TAG = RecordActivity1.class.getSimpleName();
-    private ImageButton startRecordBtn,stopRecordBtn;
-    private Button playBtn,stopBtn,backBtn;
+    private ImageButton startRecordBtn,stopRecordBtn,listRecordBtn;
+    private Button backBtn;
     private ImageView voiceImg;
     private Chronometer cutdownTime;
     private AudioView mAudioView;
@@ -42,6 +44,7 @@ public class RecordActivity1 extends AppCompatActivity implements View.OnClickLi
     final RecordManager recordManager = RecordManager.getInstance();
     private static final String[] STYLE_DATA = new String[]{"STYLE_ALL", "STYLE_NOTHING", "STYLE_WAVE", "STYLE_HOLLOW_LUMP"};
     private static String RECORD_ADD = "";
+    private File recordFile;    //录音文件
 
 
     @Override
@@ -54,16 +57,21 @@ public class RecordActivity1 extends AppCompatActivity implements View.OnClickLi
         /***请求录音权限**/
         AndPermission.with(this).runtime().permission(new String[]{Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE,
                         Permission.RECORD_AUDIO}).start();
-
     }
 
     /**默认为WAV格式文件**/
     private void initEvent() {
-        RECORD_ADD = "/data/data/"+ AppUtils.getPackageName(RecordActivity1.this)+"/files/";
+        RECORD_ADD = "/data/data/"+ AppUtils.getPackageName(RecordActivity1.this)+"/files/record/";
         recordManager.changeFormat(RecordConfig.RecordFormat.WAV);
+        ///音频采样频率（8000，16000，44100）
+        recordManager.changeRecordConfig(recordManager.getRecordConfig().setSampleRate(16000));
+        ///设置单通道
+        recordManager.changeRecordConfig(recordManager.getRecordConfig().setChannelConfig(AudioFormat.CHANNEL_IN_MONO));
+        ///音宽位置设置8bit（8bit，16bit）
+        recordManager.changeRecordConfig(recordManager.getRecordConfig().setEncodingConfig(AudioFormat.ENCODING_PCM_16BIT));
         /**初始化设置audioView的样式**/
-        mAudioView.setStyle(AudioView.ShowStyle.getStyle(STYLE_DATA[2]), mAudioView.getDownStyle());
-        mAudioView.setStyle(mAudioView.getUpStyle(), AudioView.ShowStyle.getStyle(STYLE_DATA[3]));
+        mAudioView.setStyle(AudioView.ShowStyle.getStyle(STYLE_DATA[3]), mAudioView.getDownStyle());
+        mAudioView.setStyle(mAudioView.getUpStyle(), AudioView.ShowStyle.getStyle(STYLE_DATA[1]));
     }
 
     private void initView() {
@@ -71,17 +79,17 @@ public class RecordActivity1 extends AppCompatActivity implements View.OnClickLi
         titleBarTitle = findViewById(R.id.title_bar_title);
         startRecordBtn = findViewById(R.id.bt_start);
         stopRecordBtn = findViewById(R.id.bt_stop);
-        playBtn = findViewById(R.id.play_start_btn);
-        stopBtn = findViewById(R.id.play_stop_btn);
         voiceImg = findViewById(R.id.iv_voice_img);
         cutdownTime = findViewById(R.id.com_voice_time);
         mAudioView = findViewById(R.id.audioView);
         tvState = findViewById(R.id.tvState);
         tvSoundSize = findViewById(R.id.tvSoundSize);
+        listRecordBtn = findViewById(R.id.file_list);
         backBtn.setOnClickListener(this);
         startRecordBtn.setOnClickListener(this);
         stopRecordBtn.setOnClickListener(this);
         titleBarTitle.setText("Recording");
+        listRecordBtn.setOnClickListener(this);
     }
 
     @Override
@@ -146,7 +154,9 @@ public class RecordActivity1 extends AppCompatActivity implements View.OnClickLi
         recordManager.setRecordResultListener(new RecordResultListener() {
             @Override
             public void onResult(File result) {
+                recordFile = result;
                 Toast.makeText(RecordActivity1.this, "录音文件： " + result.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+                listRecordBtn.setVisibility(View.VISIBLE);
             }
         });
         recordManager.setRecordFftDataListener(new RecordFftDataListener() {
@@ -160,7 +170,7 @@ public class RecordActivity1 extends AppCompatActivity implements View.OnClickLi
     private void doStop() {
         recordManager.stop();
         //startRecordBtn.setText("Start");
-        startRecordBtn.setImageDrawable(getResources().getDrawable(R.mipmap.record_recording_btn));
+        startRecordBtn.setImageResource(R.mipmap.record_recording_btn);
         voiceImg.setImageResource(R.drawable.mic_default);
         curBase = 0;
         cutdownTime.stop();
@@ -173,7 +183,7 @@ public class RecordActivity1 extends AppCompatActivity implements View.OnClickLi
         if (isStart) {
             recordManager.pause();
             //startRecordBtn.setText("Start");
-            startRecordBtn.setImageDrawable(getResources().getDrawable(R.mipmap.record_recording_btn));
+            startRecordBtn.setImageResource(R.mipmap.record_recording_btn);
             curBase = SystemClock.elapsedRealtime() - cutdownTime.getBase();
             cutdownTime.stop();
             voiceImg.setImageResource(R.drawable.mic_default);
@@ -190,7 +200,7 @@ public class RecordActivity1 extends AppCompatActivity implements View.OnClickLi
             cutdownTime.setBase(SystemClock.elapsedRealtime() - curBase);
             cutdownTime.start();
             //startRecordBtn.setText("Pause");
-            startRecordBtn.setImageDrawable(getResources().getDrawable(R.mipmap.record_pause_btn));
+            startRecordBtn.setImageResource(R.mipmap.record_pause_btn);
             isStart = true;
         }
     }
@@ -200,6 +210,7 @@ public class RecordActivity1 extends AppCompatActivity implements View.OnClickLi
         switch (v.getId()){
             case R.id.bt_start:
                 doPlay();
+                deleteFile(new File(RECORD_ADD));
                 break;
             case R.id.bt_stop:
                 doStop();
@@ -207,10 +218,23 @@ public class RecordActivity1 extends AppCompatActivity implements View.OnClickLi
             case R.id.back:
                 finish();
                 break;
+            case R.id.file_list:
+                if (recordFile != null && recordFile.exists()) {
+                    dialogPlay(recordFile);
+                    Logger.i("play---->",recordFile+"");
+                }else{
+                    Toast.makeText(RecordActivity1.this,"Record file not exists",Toast.LENGTH_SHORT).show();
+                }
+                break;
 
                 default:
                     break;
         }
+    }
+
+
+    private void dialogPlay(File file){
+        new PlayDialog(RecordActivity1.this).addWavFile(file).showDialog();
     }
 
     /**判断文件夹是否存在如果存在返回true，不存在则新建文件夹**/
@@ -258,6 +282,28 @@ public class RecordActivity1 extends AppCompatActivity implements View.OnClickLi
                 .scaleY(1 + maxPeak)
                 .setDuration(10)
                 .start();
+    }
+
+
+    //flie：要删除的文件夹的所在位置
+    private void deleteFile(File file) {
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            Logger.i("Record-file-count","文件数量："+files.length);
+            if(files.length > 0) {
+                for (int i = 0; i < files.length; i++) {
+                    File f = files[i];
+                    deleteFile(f);
+                }
+                Logger.i("Record--deletefile", "删除文件夹里面的");
+            }else{
+                Logger.i("Record--deletefile", "文件夹还没有文件");
+            }
+            //file.delete();//如要保留文件夹，只删除文件，请注释这行
+        } else if (file.exists()) {
+            file.delete();
+            Logger.i("Record--is-exists","删除文件");
+        }
     }
 
 }

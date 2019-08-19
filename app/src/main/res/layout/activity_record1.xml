@@ -35,8 +35,7 @@
         <com.soft.nortek.demo.recordmanage.AudioView
             android:id="@+id/audioView"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:background="#000"
+            android:layout_height="200dp"
             android:layout_gravity="center_vertical"/>
         <TextView
             android:id="@+id/tvState"
@@ -62,51 +61,32 @@
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_centerHorizontal="true">
                 <ImageButton
                     android:id="@+id/bt_start"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@mipmap/record_recording_btn" />
+                    android:background="@drawable/record_btn_press_bg"
+                    android:src="@mipmap/record_recording_btn" />
                 <ImageButton
                     android:id="@+id/bt_stop"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@mipmap/record_stop_btn"
-                    android:layout_marginLeft="@dimen/padding_60" />
+                    android:src="@mipmap/record_done_btn"
+                    android:background="@drawable/record_btn_press_bg"
+                    android:layout_marginLeft="@dimen/padding_30" />
+                <ImageButton
+                    android:id="@+id/file_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/record_list"
+                    android:background="@drawable/record_btn_press_bg"
+                    android:layout_marginLeft="@dimen/padding_30"
+                    android:visibility="gone"/>
             </LinearLayout>
         </RelativeLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/play_start_btn"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/selector_base_fillet_border_bg"
-                android:text="@string/start"
-                android:textAllCaps="false"
-                android:textColor="@color/selector_text_color"
-                android:textSize="20sp" />
-
-            <Button
-                android:id="@+id/play_stop_btn"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/selector_base_fillet_border_bg"
-                android:text="@string/stop"
-                android:textAllCaps="false"
-                android:textColor="@color/selector_text_color"
-                android:textSize="20sp" />
-
-        </LinearLayout>
 
     </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

@@ -260,7 +260,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             default:
         }
-
     }
 
     private void viewOnClick() {
@@ -405,7 +404,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     //initMediaPlayer();//初始化播放器 MediaPlayer
                 }
                 PlayRecBtn.setEnabled(true);
-                PlayRecBtn.setTextColor(Color.WHITE);
+                PlayRecBtn.setTextColor(Color.rgb(0, 122, 255));
                 break;
             case R.id.play_left_channel:
                 initMediaPlayer("left.wav");

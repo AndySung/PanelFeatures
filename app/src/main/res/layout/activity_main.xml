@@ -20,9 +20,9 @@
                 android:layout_height="@dimen/padding_64"
                 android:layout_width="wrap_content"
                 android:text="@string/wifi_btn"
-                android:textColor="@color/text_color_white"
                 android:textSize="@dimen/text_size24"
-                android:background="@drawable/button_bg"
+                android:textColor="@color/selector_text_color"
+                android:background="@drawable/selector_base_fillet_border_bg"
                 android:layout_weight="1"
                 android:layout_margin="@dimen/padding_5" />
             <Button
@@ -31,9 +31,9 @@
                 android:layout_width="wrap_content"
                 android:text="@string/camera_btn"
                 android:layout_margin="@dimen/padding_5"
-                android:textColor="@color/text_color_white"
                 android:textSize="@dimen/text_size24"
-                android:background="@drawable/button_bg"
+                android:textColor="@color/selector_text_color"
+                android:background="@drawable/selector_base_fillet_border_bg"
                 android:layout_weight="1"/>
         </LinearLayout>
         <LinearLayout
@@ -47,9 +47,9 @@
                 android:layout_width="wrap_content"
                 android:text="@string/record_btn"
                 android:layout_margin="@dimen/padding_5"
-                android:textColor="@color/text_color_white"
                 android:textSize="@dimen/text_size24"
-                android:background="@drawable/button_bg"
+                android:textColor="@color/selector_text_color"
+                android:background="@drawable/selector_base_fillet_border_bg"
                 android:layout_weight="1"/>
             <Button
                 android:id="@+id/play_btn"
@@ -57,9 +57,9 @@
                 android:layout_width="wrap_content"
                 android:text="@string/play_1khz"
                 android:layout_margin="@dimen/padding_5"
-                android:textColor="@color/text_color_white"
                 android:textSize="@dimen/text_size24"
-                android:background="@drawable/button_bg"
+                android:textColor="@color/selector_text_color"
+                android:background="@drawable/selector_base_fillet_border_bg"
                 android:layout_weight="1"/>
         </LinearLayout>
         <LinearLayout
@@ -73,9 +73,9 @@
                 android:layout_width="wrap_content"
                 android:text="@string/touch_btn"
                 android:layout_margin="@dimen/padding_5"
-                android:textColor="@color/text_color_white"
                 android:textSize="@dimen/text_size24"
-                android:background="@drawable/button_bg"
+                android:textColor="@color/selector_text_color"
+                android:background="@drawable/selector_base_fillet_border_bg"
                 android:layout_weight="1"/>
             <Button
                 android:id="@+id/display_btn"
@@ -83,9 +83,9 @@
                 android:layout_width="wrap_content"
                 android:text="@string/display_btn"
                 android:layout_margin="@dimen/padding_5"
-                android:textColor="@color/text_color_white"
                 android:textSize="@dimen/text_size24"
-                android:background="@drawable/button_bg"
+                android:textColor="@color/selector_text_color"
+                android:background="@drawable/selector_base_fillet_border_bg"
                 android:layout_weight="1"/>
         </LinearLayout>
         <LinearLayout
@@ -99,9 +99,9 @@
                 android:layout_width="wrap_content"
                 android:text="@string/play_rec_btn"
                 android:layout_margin="@dimen/padding_5"
-                android:textColor="@color/text_color_white"
                 android:textSize="@dimen/text_size24"
-                android:background="@drawable/button_bg"
+                android:textColor="@color/selector_text_color"
+                android:background="@drawable/selector_base_fillet_border_bg"
                 android:layout_weight="1"/>
             <Button
                 android:id="@+id/iperf_btn"
@@ -109,9 +109,9 @@
                 android:layout_width="wrap_content"
                 android:text="@string/IPERF_btn"
                 android:layout_margin="@dimen/padding_5"
-                android:textColor="@color/text_color_white"
                 android:textSize="@dimen/text_size24"
-                android:background="@drawable/button_bg"
+                android:textColor="@color/selector_text_color"
+                android:background="@drawable/selector_base_fillet_border_bg"
                 android:layout_weight="1"/>
         </LinearLayout>
 
@@ -132,9 +132,9 @@
                 android:layout_width="wrap_content"
                 android:text="@string/play_left"
                 android:layout_margin="@dimen/padding_5"
-                android:textColor="@color/text_color_white"
                 android:textSize="@dimen/text_size24"
-                android:background="@drawable/button_bg"
+                android:textColor="@color/selector_text_color"
+                android:background="@drawable/selector_base_fillet_border_bg"
                 android:layout_weight="1"/>
             <Button
                 android:id="@+id/play_channel"
@@ -142,9 +142,9 @@
                 android:layout_width="wrap_content"
                 android:text="@string/play_channel"
                 android:layout_margin="@dimen/padding_5"
-                android:textColor="@color/text_color_white"
                 android:textSize="@dimen/text_size24"
-                android:background="@drawable/button_bg"
+                android:textColor="@color/selector_text_color"
+                android:background="@drawable/selector_base_fillet_border_bg"
                 android:layout_weight="1"/>
             <Button
                 android:id="@+id/play_right_channel"
@@ -152,9 +152,9 @@
                 android:layout_width="wrap_content"
                 android:text="@string/play_right"
                 android:layout_margin="@dimen/padding_5"
-                android:textColor="@color/text_color_white"
                 android:textSize="@dimen/text_size24"
-                android:background="@drawable/button_bg"
+                android:textColor="@color/selector_text_color"
+                android:background="@drawable/selector_base_fillet_border_bg"
                 android:layout_weight="1"/>
         </LinearLayout>
 
@@ -167,9 +167,9 @@
             android:layout_width="match_parent"
             android:text="@string/reset_btn"
             android:layout_margin="@dimen/padding_5"
-            android:textColor="@color/text_color_white"
             android:textSize="@dimen/text_size24"
-            android:background="@drawable/button_bg"
+            android:textColor="@color/selector_text_color"
+            android:background="@drawable/selector_base_fillet_border_bg"
             android:layout_weight="1"/>
         <!--<TextView
             android:id="@+id/ip_address"
@@ -192,9 +192,9 @@
                 android:layout_width="wrap_content"
                 android:text="@string/document_manager"
                 android:layout_margin="@dimen/padding_5"
-                android:textColor="@color/text_color_white"
                 android:textSize="@dimen/text_size24"
-                android:background="@drawable/button_bg"
+                android:textColor="@color/selector_text_color"
+                android:background="@drawable/selector_base_fillet_border_bg"
                 android:layout_weight="1"/>
             <Button
                 android:id="@+id/bluetooth_transmission"
@@ -202,9 +202,9 @@
                 android:layout_width="wrap_content"
                 android:text="@string/bluetooth_transmission"
                 android:layout_margin="@dimen/padding_5"
-                android:textColor="@color/text_color_white"
                 android:textSize="@dimen/text_size24"
-                android:background="@drawable/button_bg"
+                android:textColor="@color/selector_text_color"
+                android:background="@drawable/selector_base_fillet_border_bg"
                 android:layout_weight="1"/>
             <Button
                 android:id="@+id/wifi_transmission"
@@ -212,9 +212,9 @@
                 android:layout_width="wrap_content"
                 android:text="@string/wifi_transmission"
                 android:layout_margin="@dimen/padding_5"
-                android:textColor="@color/text_color_white"
                 android:textSize="@dimen/text_size24"
-                android:background="@drawable/button_bg"
+                android:textColor="@color/selector_text_color"
+                android:background="@drawable/selector_base_fillet_border_bg"
                 android:layout_weight="1"/>
         </LinearLayout>
 

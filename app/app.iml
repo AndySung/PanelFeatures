@@ -165,5 +165,8 @@
     <orderEntry type="module" module-name="recorderlib" />
     <orderEntry type="module" module-name="easywificonnect" />
     <orderEntry type="module" module-name="Camera" />
+    <orderEntry type="module" module-name="recorderlib" />
+    <orderEntry type="module" module-name="easywificonnect" />
+    <orderEntry type="module" module-name="Camera" />
   </component>
 </module>

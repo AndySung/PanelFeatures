@@ -21,12 +21,12 @@ public class AudioView extends View {
      * 频谱数量
      */
     private static final int LUMP_COUNT = 128 * 2;
-    private static final int LUMP_WIDTH = 6;
+    private static final int LUMP_WIDTH = 3;
     private static final int LUMP_SPACE = 2;
     private static final int LUMP_MIN_HEIGHT = LUMP_WIDTH;
     private static final int LUMP_MAX_HEIGHT = 200;//TODO: HEIGHT
     private static final int LUMP_SIZE = LUMP_WIDTH + LUMP_SPACE;
-    private static final int LUMP_COLOR = Color.parseColor("#6de8fd");
+    private static final int LUMP_COLOR = Color.parseColor("#2379e9");
 
     private static final int WAVE_SAMPLING_INTERVAL = 5;
 
@@ -82,10 +82,10 @@ public class AudioView extends View {
         this.upShowStyle = upShowStyle;
         this.downShowStyle = downShowStyle;
         if (upShowStyle == ShowStyle.STYLE_HOLLOW_LUMP || upShowStyle == ShowStyle.STYLE_ALL) {
-            lumpUpPaint.setColor(Color.parseColor("#A4D3EE"));
+            lumpUpPaint.setColor(Color.parseColor("#1B92D6"));
         }
         if (downShowStyle == ShowStyle.STYLE_HOLLOW_LUMP || downShowStyle == ShowStyle.STYLE_ALL) {
-            lumpDownPaint.setColor(Color.parseColor("#A4D3EE"));
+            lumpDownPaint.setColor(Color.parseColor("#1B92D6"));
         }
     }
 

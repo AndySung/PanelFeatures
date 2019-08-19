@@ -12,4 +12,5 @@
 
     <color name="colorWifiConnected">#6495ED</color>
     <color name="colorAccent">#0088FF</color>
+    <color name="tab_text_color_select">#007AFF</color>
 </resources>
