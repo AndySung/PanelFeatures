@@ -493,6 +493,7 @@ public class CameraActivity extends AppCompatActivity implements View.OnClickLis
                     fos.close();
                     Intent intent = new Intent();
                     intent.putExtra(KEY_IMAGE_PATH, imageFile.getPath());
+                    intent.putExtra("Type", "intenet");
                     setResult(RESULT_OK, intent);
                 } catch (IOException e) {
                     setResult(RESULT_FIRST_USER);

@@ -43,8 +43,6 @@ public class BaseApplication extends Application {
         super.onCreate();
         instance = this;
         initMainParams();
-        CrashHandler.getInstance().init(this);
-
         AutoSize.initCompatMultiProcess(this);
         AutoSizeConfig.getInstance()
 

@@ -89,7 +89,7 @@ public class PopupMenuDialog implements View.OnClickListener{
         dialog.setOnDismissListener(this::onDialogDismiss);
 
         Window dialogWindow = dialog.getWindow();
-        dialogWindow.setGravity(Gravity.LEFT | Gravity.BOTTOM);
+        dialogWindow.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
         WindowManager.LayoutParams lp = dialogWindow.getAttributes();
         lp.x = 0;
         lp.y = 0;

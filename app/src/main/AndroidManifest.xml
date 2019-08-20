@@ -67,6 +67,7 @@
         <activity android:name=".filesmanage.Files_Manage_Property" android:screenOrientation = "landscape"/>
         <activity android:name=".WiFiTransferActivity" android:screenOrientation = "landscape"/>
         <activity android:name=".RecordActivity1" android:screenOrientation = "landscape"/>
+        <activity android:name=".DrawViewActivity" android:screenOrientation = "landscape"/>
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.soft.nortek.demo.fileprovider"

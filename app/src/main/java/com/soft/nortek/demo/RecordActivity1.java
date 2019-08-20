@@ -57,6 +57,8 @@ public class RecordActivity1 extends AppCompatActivity implements View.OnClickLi
         /***请求录音权限**/
         AndPermission.with(this).runtime().permission(new String[]{Permission.READ_EXTERNAL_STORAGE, Permission.WRITE_EXTERNAL_STORAGE,
                         Permission.RECORD_AUDIO}).start();
+        stopRecordBtn.setEnabled(false);
+        stopRecordBtn.setImageResource(R.mipmap.record_done_un_enable_btn);
     }
 
     /**默认为WAV格式文件**/
@@ -71,7 +73,7 @@ public class RecordActivity1 extends AppCompatActivity implements View.OnClickLi
         recordManager.changeRecordConfig(recordManager.getRecordConfig().setEncodingConfig(AudioFormat.ENCODING_PCM_16BIT));
         /**初始化设置audioView的样式**/
         mAudioView.setStyle(AudioView.ShowStyle.getStyle(STYLE_DATA[3]), mAudioView.getDownStyle());
-        mAudioView.setStyle(mAudioView.getUpStyle(), AudioView.ShowStyle.getStyle(STYLE_DATA[1]));
+        mAudioView.setStyle(mAudioView.getUpStyle(), AudioView.ShowStyle.getStyle(STYLE_DATA[3]));
     }
 
     private void initView() {
@@ -211,9 +213,13 @@ public class RecordActivity1 extends AppCompatActivity implements View.OnClickLi
             case R.id.bt_start:
                 doPlay();
                 deleteFile(new File(RECORD_ADD));
+                stopRecordBtn.setEnabled(true);
+                stopRecordBtn.setImageResource(R.mipmap.record_done_btn);
                 break;
             case R.id.bt_stop:
                 doStop();
+                stopRecordBtn.setEnabled(false);
+                stopRecordBtn.setImageResource(R.mipmap.record_done_un_enable_btn);
                 break;
             case R.id.back:
                 finish();

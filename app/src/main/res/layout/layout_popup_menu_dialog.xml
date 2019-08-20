@@ -18,8 +18,9 @@
     <TextView
         android:id="@+id/popup_menu_subtitle"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:gravity="center"
         android:text="@string/pls_check_network_state"
         android:textSize="@dimen/text_size24"
@@ -65,7 +66,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
         <Button
             android:id="@+id/shared_wifi_cancel"
             style="?android:attr/borderlessButtonStyle"

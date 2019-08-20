@@ -35,7 +35,7 @@
         <com.soft.nortek.demo.recordmanage.AudioView
             android:id="@+id/audioView"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="300dp"
             android:layout_gravity="center_vertical"/>
         <TextView
             android:id="@+id/tvState"

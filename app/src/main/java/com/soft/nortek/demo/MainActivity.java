@@ -44,6 +44,7 @@ import com.soft.nortek.demo.wifiiperf.CommandHelper;
 import com.soft.nortek.demo.wifiiperf.CommandResult;
 import com.tj24.easywifi.wifi.WifiConnector;
 import com.tj24.easywifi.wifi.WifiUtil;
+import com.zlw.main.recorderlib.utils.Logger;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -81,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private WifiManager mWm;
     private WifiConnector connector;
 
+    public static final String KEY_IMAGE_PATH = "imagePath";
     private static final int IPERF_ERROR = 1;
     private static final int IPERF_SCCESS = 2;
     /*** 1. 拷贝iperf到该目录下*/
@@ -365,7 +367,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case R.id.touch_btn:
-                Intent drawActivity = new Intent(MainActivity.this, DrawActivity.class);
+                Intent drawActivity = new Intent(MainActivity.this, DrawViewActivity.class);
                 startActivity(drawActivity);
                 break;
             case R.id.display_btn:
@@ -520,15 +522,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //选择了文件发送
         if (resultCode == RESULT_OK) {
             String type = data.getStringExtra("Type");
+            Logger.i("type is value:",type);
             if (type.equals("intenet")) {
                 //将选择的文件的名字以及路径存储下来
-                final String fileName = data.getStringExtra("FileName");
-                final String path = data.getStringExtra("FilePath");
-                System.out.println("0000000000000000000000000000000000000000000000000000000000000000" + path);
+                final String fileName = data.getStringExtra(KEY_IMAGE_PATH);
+//                final String path = data.getStringExtra("FilePath");
                 System.out.println("0000000000000000000000000000000000000000000000000000000000000000" + fileName);
                 //String uploadUrl = "http://192.168.1.147/OfflineTrans/AndroidUploadAction.php";
-                String uploadUrl = "http://115.28.101.196/AndroidUploadAction.php";
+                //String uploadUrl = "http://115.28.101.196/AndroidUploadAction.php";
                 //new HttpThread_UpLoad(uploadUrl, path).start();//启动文件上传的线程
+                Toast.makeText(MainActivity.this,"文件保存到：" + fileName,Toast.LENGTH_SHORT).show();
             } else if (type.equals("bluetooth")) {
                 String path = data.getStringExtra("FilePath");
                 File file = new File(path);
