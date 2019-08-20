@@ -1,0 +1,4 @@
+* text = auto
+*.java linguist-language=java
+*.bin linguist-language=java
+*.xml linguist-language=java
