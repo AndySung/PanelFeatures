@@ -1,39 +1,50 @@
 # PanelFeatures
-Test whether the function on the Android board is normal, camera, recording, wireless network, etc.
+Test whether the function on the Android board is normal, camera, recording, wireless network, etc.<br><br>
+主要包括以下功能：
+----
+* WIFICON（Wi-Fi直连，通过读取txt文件里面的Wi-Fi SSID和PWD进行Wi-Fi连接）
+* CAMERA（自定义相机预览界面，拍照界面，拍照后文件保存到包名下的files/pictures中）
+* RECORD（录音功能，开始、暂停、播放，还配有声音波形效果）
+* TOUCH（多点触控画板，画笔颜色随机）
+* FILES（简易版文件管理器）
+* BLUETOOTH（通过系统蓝牙传输文件）
+* TRANSMISSION（在局域网中通过Wi-Fi进行文件传输，参考多看Wi-Fi传书功能）
+* IPERF（iperf网络测试吞吐量，目前没测试成功，好像需要编译源码，如果有小伙伴知道该怎么弄，清不吝赐教）
+* 页面上其他的按钮功能均为播放不同音频文件按钮，RESET为停止播放按钮
 
 README
 =====
-![github](https://github.com/AndySung/readme_add_pic/blob/master/github-logo.png "Github logo")  
 
 ![read](https://github.com/AndySung/readme_add_pic/blob/master/panelfetrues_demand.png "read")
 
-如果不能工作，查看是否是路径不对
+如果不能工作，查看是否是路径不对(这个为我们自己测试的Demo所有将目录全部放到了自己的包名下面)
 ====
 
 wifi 连接（需要手动添加和修改文件）
 ----
 
-路径：/mnt/sdcard/wifidemo/wifidata.txt <br>
+路径：/data/data/com.soft.nortek.demo/files/wifidata.txt <br>
 文件内容：wifi_ssid:<HUAWEI P9>;wifi_password:{song0123.com};<br>
 需要修改<>{}里面的字符，<>里面表示Wi-Fi名称，{}里面字符表示Wi-Fi密码<br>
 
 
-
-
 边录音边播放音乐（不需要手动添加文件）
 ----
-路径：/mnt/sdcard/Music/new.amr<br>
+路径：/data/data/com.soft.nortek.demo/files/new.amr<br>
 
 
 
-音乐（需要手动添加文件，名字必须为max_1k.wav）
+音乐（需要手动添加文件）
 ----
-路径： /mnt.sdcard/max_1k.wav <br>
+路径： /data/data/com.soft.nortek.demo/files/max_1k.wav <br>
 请自行下载音乐放到相应的目录 <br>
 
+其他的播放文件也是放这里（/data/data/com.soft.nortek.demo/files/）的，下载后会在asset目录中看到这些文件，我是将这些文件从asset中复制到了包名下的files中
+----
+<br>
 
 
-iPerf
+iPerf（需要编译源码）
 =====
 测试方式
 -----
@@ -64,3 +75,4 @@ Client启动指令
 6. -P 1    表示客户端与服务端之间的线程数为1。服务端同时使用此参数 <br>
 7. -n 100M 表示发送总数据量为100M。此时-t限定的时长将无效 <br>
 8. -i 2    表示每2秒刷新一次log <br>
+
