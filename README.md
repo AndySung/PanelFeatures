@@ -77,6 +77,9 @@ Client启动指令
 8. -i 2    表示每2秒刷新一次log <br>
 
 
+由于我这个Demo是跑在平板上测试的，所有默认是以横屏显示的，大家定义成竖屏效果可能会更好些
+========
+
 ![mainscreen](https://github.com/AndySung/readme_add_pic/blob/master/screenshot_main.png "MainScreen")
 
 
