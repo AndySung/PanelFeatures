@@ -76,3 +76,19 @@ Client启动指令
 7. -n 100M 表示发送总数据量为100M。此时-t限定的时长将无效 <br>
 8. -i 2    表示每2秒刷新一次log <br>
 
+
+![mainscreen](https://github.com/AndySung/readme_add_pic/blob/master/screenshot_main.png "MainScreen")
+
+
+![Camera](https://github.com/AndySung/readme_add_pic/blob/master/screenshot_camera.png "Camera")
+
+![Recorder](https://github.com/AndySung/readme_add_pic/blob/master/screenshot_record.png "Recorder")
+
+![Touch](https://github.com/AndySung/readme_add_pic/blob/master/screenshot_duodian.png "Touch")
+
+![Display](https://github.com/AndySung/readme_add_pic/blob/master/screenshot_display.png "Display")
+
+![Files](https://github.com/AndySung/readme_add_pic/blob/master/screenshot_filemanage.png "Files")
+
+![Transmission](https://github.com/AndySung/readme_add_pic/blob/master/screenshot_wifitransfer.png "Transmission")
+
