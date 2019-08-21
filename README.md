@@ -92,3 +92,6 @@ Client启动指令
 
 ![Transmission](https://github.com/AndySung/readme_add_pic/blob/master/screenshot_wifitransfer.png "Transmission")
 
+![Web_transfer](https://github.com/AndySung/readme_add_pic/blob/master/wifi_transfer.png "Web_Transfer")
+
+
