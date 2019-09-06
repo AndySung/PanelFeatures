@@ -10,7 +10,6 @@ import android.graphics.drawable.Drawable;
 
 ///跟App相关的辅助类
 public class AppUtils {
-
     /**
      * 获取应用程序名称
      */

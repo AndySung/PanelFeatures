@@ -220,7 +220,6 @@ public class WiFiTransferActivity extends AppCompatActivity implements Animator.
 
         class MyViewHolder extends RecyclerView.ViewHolder {
             TextView mTvBookName;
-
             public MyViewHolder(View view) {
                 super(view);
                 mTvBookName = view.findViewById(R.id.book_name);
