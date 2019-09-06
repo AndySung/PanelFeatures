@@ -45,7 +45,7 @@ public class Files_Manage_Activity extends AppCompatActivity {
     private TextView titleBartitle;
     private String oldpath = null;//旧文件路径（文件剪切，复制参数之一）
     private boolean iscopy = true;//是否复制
-    private final String[][] MIME_MapTable = {
+    public final String[][] MIME_MapTable = {
             //{后缀名， MIME类型}
             {".3gp", "video/3gpp"},
             {".apk", "application/vnd.android.package-archive"},
@@ -254,7 +254,7 @@ public class Files_Manage_Activity extends AppCompatActivity {
     }
 
     //打开文件
-    private void openFile(String filepath) {
+    public void openFile(String filepath) {
         File file = new File(filepath);
         Intent intent = new Intent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

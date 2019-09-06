@@ -2,15 +2,13 @@ package com.soft.nortek.demo;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,6 +18,7 @@ import com.hwangjr.rxbus.annotation.Subscribe;
 import com.hwangjr.rxbus.annotation.Tag;
 import com.hwangjr.rxbus.thread.EventThread;
 import com.soft.nortek.demo.common.Constants;
+import com.soft.nortek.demo.filesmanage.Files_Manage_Activity;
 import com.soft.nortek.demo.wifitransfer.PopupMenuDialog;
 import com.soft.nortek.demo.wifitransfer.WebService;
 
@@ -34,7 +33,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class WiFiTransferActivity extends AppCompatActivity implements Animator.AnimatorListener,View.OnClickListener{
+public class WiFiTransferActivity extends Files_Manage_Activity implements Animator.AnimatorListener,View.OnClickListener{
 //    private Toolbar mToolBar;
     private FloatingActionButton mFab;
     private RecyclerView mBookList;
@@ -122,7 +121,7 @@ public class WiFiTransferActivity extends AppCompatActivity implements Animator.
     }
 
     void initRecyclerView() {
-        mBookshelfAdapter = new BookshelfAdapter();
+        mBookshelfAdapter = new BookshelfAdapter(WiFiTransferActivity.this,mBooks);
         mBookList.setHasFixedSize(true);
         mBookList.setLayoutManager(new GridLayoutManager(this, 3));
         mBookList.setAdapter(mBookshelfAdapter);
@@ -140,6 +139,31 @@ public class WiFiTransferActivity extends AppCompatActivity implements Animator.
                 RxBus.get().post(Constants.RxBusEventType.LOAD_BOOK_LIST, 0);
             }
         });
+
+        mBookshelfAdapter.setOnItemClickListener(new BookshelfAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+               // Toast.makeText(WiFiTransferActivity.this, "clicked " + Constants.DIR+"/"+mBooks.get(position),Toast.LENGTH_SHORT).show();
+                openFile(Constants.DIR+"/"+mBooks.get(position));
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+               // Toast.makeText(WiFiTransferActivity.this, "long clicked " + position,Toast.LENGTH_SHORT).show();
+                //将取消
+                new AlertDialog.Builder(WiFiTransferActivity.this)
+                        .setTitle("请选择要进行的操作")
+                        .setMessage("确定要删除文件" + mBooks.get(position))
+                        .setNegativeButton("确定", (dialog, which) -> {
+                            deleteFile(new File(Constants.DIR+"/"+mBooks.get(position)));
+                            RxBus.get().post(Constants.RxBusEventType.LOAD_BOOK_LIST, 0);
+                        })
+                        .setPositiveButton("取消", (dialog, which) -> {
+                        }).show();
+            }
+        });
+
     }
 
     @Subscribe(thread = EventThread.IO, tags = {@Tag(Constants.RxBusEventType.LOAD_BOOK_LIST)})
@@ -198,31 +222,55 @@ public class WiFiTransferActivity extends AppCompatActivity implements Animator.
         });
     }
 
-    class BookshelfAdapter extends RecyclerView.Adapter<BookshelfAdapter.MyViewHolder> {
-        @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            MyViewHolder holder = new MyViewHolder(LayoutInflater.from(
-                    WiFiTransferActivity.this).inflate(R.layout.book_item, parent,
-                    false));
-            return holder;
-        }
-
-        @Override
-        public void onBindViewHolder(final MyViewHolder holder, int position) {
-            holder.mTvBookName.setText(mBooks.get(position));
-        }
-
-        @Override
-        public int getItemCount() {
-            return mBooks.size();
-        }
-
-        class MyViewHolder extends RecyclerView.ViewHolder {
-            TextView mTvBookName;
-            public MyViewHolder(View view) {
-                super(view);
-                mTvBookName = view.findViewById(R.id.book_name);
-            }
-        }
-    }
+//    public class BookshelfAdapter extends RecyclerView.Adapter<BookshelfAdapter.MyViewHolder> {
+//        private OnItemClickListener mOnItemClickListener;
+//        @Override
+//        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+//            MyViewHolder holder = new MyViewHolder(LayoutInflater.from(
+//                    WiFiTransferActivity.this).inflate(R.layout.book_item, parent,
+//                    false));
+//            return holder;
+//        }
+//
+//        @Override
+//        public void onBindViewHolder(final MyViewHolder holder, int position) {
+//            holder.mTvBookName.setText(mBooks.get(position));
+//            // item click
+//            if (mOnItemClickListener != null) {
+//                holder.itemView.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        mOnItemClickListener.onItemClick(holder.itemView, position);
+//                    }
+//                });
+//            }
+//
+//            // item long click
+//            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+//                @Override
+//                public boolean onLongClick(View view) {
+//                    mOnItemClickListener.onItemLongClick(holder.itemView, position);
+//                    return true;
+//                }
+//            });
+//        }
+//
+//        @Override
+//        public int getItemCount() {
+//            return mBooks.size();
+//        }
+//
+//       interface OnItemClickListener {
+//            void onItemClick(View view, int position);
+//            void onItemLongClick(View view, int position);
+//        }
+//
+//        class MyViewHolder extends RecyclerView.ViewHolder {
+//            TextView mTvBookName;
+//            public MyViewHolder(View view) {
+//                super(view);
+//                mTvBookName = view.findViewById(R.id.book_name);
+//            }
+//        }
+//    }
 }
