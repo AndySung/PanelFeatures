@@ -199,7 +199,6 @@ public class WiFiTransferActivity extends AppCompatActivity implements Animator.
     }
 
     class BookshelfAdapter extends RecyclerView.Adapter<BookshelfAdapter.MyViewHolder> {
-
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             MyViewHolder holder = new MyViewHolder(LayoutInflater.from(
