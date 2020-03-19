@@ -48,6 +48,7 @@ dependencies {
     implementation project(':easywificonnect')
     implementation project(':Camera')
     implementation project(':recorderlib')
+    implementation 'com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar'
 
 
 

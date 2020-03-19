@@ -2,11 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Camera/Camera.iml" filepath="$PROJECT_DIR$/Camera/Camera.iml" />
-      <module fileurl="file://$PROJECT_DIR$/PanelFeatures.iml" filepath="$PROJECT_DIR$/PanelFeatures.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/easywifi/easywificonnect.iml" filepath="$PROJECT_DIR$/easywifi/easywificonnect.iml" />
-      <module fileurl="file://$PROJECT_DIR$/recorderlib/recorderlib.iml" filepath="$PROJECT_DIR$/recorderlib/recorderlib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Camera/Camera.iml" filepath="$PROJECT_DIR$/Camera/Camera.iml" group="PanelFeatures/Camera" />
+      <module fileurl="file://$PROJECT_DIR$/PanelFeatures.iml" filepath="$PROJECT_DIR$/PanelFeatures.iml" group="PanelFeatures" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="PanelFeatures/app" />
+      <module fileurl="file://$PROJECT_DIR$/easywifi/easywificonnect.iml" filepath="$PROJECT_DIR$/easywifi/easywificonnect.iml" group="PanelFeatures/easywificonnect" />
+      <module fileurl="file://$PROJECT_DIR$/recorderlib/recorderlib.iml" filepath="$PROJECT_DIR$/recorderlib/recorderlib.iml" group="PanelFeatures/recorderlib" />
     </modules>
   </component>
 </project>

@@ -31,9 +31,12 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation 'com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar'
+    implementation ('com.squareup.retrofit2:adapter-rxjava:2.0.0-beta4')
     //弹框视图
     api 'com.github.RmondJone:SpringDiaLog:1.0.6'
     api 'com.github.bumptech.glide:glide:3.7.0'
-    //权限申请
+//    //权限申请
     api 'com.yanzhenjie:permission:2.0.0-rc11'
+
 }

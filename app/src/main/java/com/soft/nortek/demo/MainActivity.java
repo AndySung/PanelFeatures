@@ -1,5 +1,6 @@
 package com.soft.nortek.demo;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -27,8 +28,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -38,10 +41,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rmondjone.camera.CameraActivity;
+import com.rmondjone.camera.DefaultSubscriber;
 import com.soft.nortek.demo.filesmanage.Files_Manage_Activity;
 import com.soft.nortek.demo.offlinefiles.Offline_Files_Choose_Activity;
 import com.soft.nortek.demo.wifiiperf.CommandHelper;
 import com.soft.nortek.demo.wifiiperf.CommandResult;
+import com.tbruyelle.rxpermissions.Permission;
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.tj24.easywifi.wifi.WifiConnector;
 import com.tj24.easywifi.wifi.WifiUtil;
 import com.zlw.main.recorderlib.utils.Logger;
@@ -65,7 +71,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
-
     private final String TAG = getClass().getSimpleName();
     private ImageView mPicture;
     private static final int TAKE_PHOTO = 189;
@@ -97,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**添加路径**/
     private static String WIFI_DATA_FILE = "";
     private static String PLAYAUDIO = "";
-
+    RxPermissions rxPermissions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -353,7 +358,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.camera_btn:
                 //takePhoto();
-                CameraActivity.startMe(this, 2005, CameraActivity.MongolianLayerType.IDCARD_POSITIVE);
+                //CameraActivity.startMe(this, 2005, CameraActivity.MongolianLayerType.IDCARD_POSITIVE);
+                rxPermissions = RxPermissions.getInstance(this);
+
+                        rxPermissions.requestEach(Manifest.permission.CAMERA).subscribe(new DefaultSubscriber<Permission>() {
+                            @Override
+                            public void onNext(Permission permission) {
+                                if (permission.granted) {
+                                    startActivity(new Intent(MainActivity.this, CameraActivity.class));
+                                } else {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                                    builder.setMessage("您未授权相机权限,将无法拍照,请在权限管理中开启相机权限")
+                                            .setTitle("提示").setPositiveButton("确认", (dialog, which) -> {
+                                                Uri packageURI = Uri.parse("package:" + getPackageName());
+                                                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, packageURI);
+                                                startActivity(intent);
+                                            }).setNegativeButton("取消", (dialog, which) -> dialog.dismiss());
+                                    builder.create().show();
+
+                                }
+                            }
+                        });
+
+
                 break;
             case R.id.record_btn:
                 Intent goRecordActivity = new Intent(MainActivity.this, RecordActivity1.class);

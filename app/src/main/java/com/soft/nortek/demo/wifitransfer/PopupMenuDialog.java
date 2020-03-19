@@ -83,18 +83,24 @@ public class PopupMenuDialog implements View.OnClickListener{
 
 
         view.setMinimumWidth(display.getWidth());
+        view.setMinimumHeight(display.getHeight());
         dialog = new Dialog(context, R.style.PopupMenuDialogStyle);
         dialog.setContentView(view);
 //        mUnbinder = ButterKnife.bind(this, dialog);
         dialog.setOnDismissListener(this::onDialogDismiss);
 
         Window dialogWindow = dialog.getWindow();
-        dialogWindow.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
         WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-        lp.x = 0;
-        lp.y = 0;
-        dialogWindow.setAttributes(lp);
+        dialogWindow.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
 
+//        lp.x = 0;
+//        lp.y = 0;
+//        dialogWindow.setAttributes(lp);
+        lp.x = 0; // 新位置X坐标
+        lp.y = 0; // 新位置Y坐标
+        lp.height = (int) (display.getHeight() * 0.58); // 高度设置为屏幕的0.6
+        lp.width = (int) (display.getWidth() * 0.5); // 宽度设置为屏幕的0.65
+        dialogWindow.setAttributes(lp);
         return this;
     }
 
