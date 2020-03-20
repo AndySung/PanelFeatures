@@ -61,11 +61,14 @@ public class DrawView extends View {
         init();
     }
 
-    private void init() {
+    public void init() {
         mPaint.setAntiAlias(true);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
-        mPaint.setStrokeWidth(dip2px(getContext(), 25));
+    }
+
+    public void PaintStrokeWidth(int width){
+        mPaint.setStrokeWidth(dip2px(getContext(),width));
     }
 
     @Override
